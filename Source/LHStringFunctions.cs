@@ -21,13 +21,37 @@ namespace LHCommonFunctions.Source
     * *********************************************************************************************/
     public static class LHStringFunctions
     {
+        //This function converts a String to its ASCII number representation. Hex numbers can be escaped by '\'. The null terminator is not included in the array.
+        public static int[] aIConvertStringToNumberArray(String qString)
+        {
+            List<int> LINumbers = new List<int>();
+            int iStringCnt = 0;
+            while (iStringCnt < qString.Length)
+            {
+                if ((qString[iStringCnt] == '\\'))                                                  //Check for escape character
+                {
+                    if ((iStringCnt + 4 < qString.Length) && qString[iStringCnt + 1] == '0' && qString[iStringCnt + 2] == 'x')    //Check for Hex number
+                    {
+                        LINumbers.Add(int.Parse("" + qString[iStringCnt + 3] + qString[iStringCnt + 4], NumberStyles.HexNumber));
+                        iStringCnt += 5;
+                    }
+                }
+                else                                                                                //Usual char
+                {
+                    LINumbers.Add((int)qString[iStringCnt]);
+                    iStringCnt++;
+                }
+            }
+            return LINumbers.ToArray();
+        }
+
         //This function returns the extention of a file
         public static String sGetFileExtention(String qsFilePath)
         {
             String[] aSplitStrings = qsFilePath.Split('.');
             return aSplitStrings[aSplitStrings.Count() - 1];
         }
-    
+
         //This function returns the filename of a file
         public static String sGetFileName(String qsFilePath)
         {
@@ -35,7 +59,7 @@ namespace LHCommonFunctions.Source
             return aSplitStrings[aSplitStrings.Count() - 1];
         }
 
-        //This function inserts a string in an observablecollection. 
+        //This function inserts a string in an observablecollection sorted. qLSD determines how the observablecollection is sorted
         public static void vInsertStringInObservableCollection(ObservableCollection<String> qsOC, String qsString, ListSortDirection qLSD)
         {
             if (qsOC.Count == 0)
@@ -53,7 +77,7 @@ namespace LHCommonFunctions.Source
             {
                 iCompareValue = 1;
             }
-            while ((iIndex<qsOC.Count)&&(iCompareValue != qsString.CompareTo(qsOC[iIndex])))
+            while ((iIndex < qsOC.Count) && (iCompareValue != qsString.CompareTo(qsOC[iIndex])))
             {
                 iIndex++;
             }
