@@ -13,7 +13,7 @@ namespace LHCommonFunctions.Source
     * 
     * This class provides functions for common operations
     * 
-    * *********************************************************************************************/
+    **********************************************************************************************/
     public static class LHMiscFunctions
     {
 

@@ -18,7 +18,7 @@ namespace LHCommonFunctions.Source
     * 
     * This class provides functions for common string operations
     * 
-    * *********************************************************************************************/
+    **********************************************************************************************/
     public static class LHStringFunctions
     {
         //This function converts a String to its ASCII number representation. Hex numbers can be escaped by '\'. The null terminator is not included in the array.

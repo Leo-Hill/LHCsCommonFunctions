@@ -10,7 +10,7 @@ namespace LHCommonFunctions.Source
     * 
     * This class provides functions for common color calculations
     * 
-    * *********************************************************************************************/
+    **********************************************************************************************/
     public class LHColorFunctions
     {
     }
