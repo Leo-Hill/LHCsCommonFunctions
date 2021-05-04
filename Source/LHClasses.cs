@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -68,10 +68,10 @@ namespace LHCommonFunctions.Source
 
    /***********************************************************************************************
    * 
-   * This class provides a function to validate bound input data
+   * This class provides a function to validate bound input data and all children
    * 
    **********************************************************************************************/
-    public static class CLass_Validator
+    public static class Class_Validator
     {
         public static bool IsValid(DependencyObject obj)
         {

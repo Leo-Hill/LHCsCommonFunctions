@@ -21,28 +21,51 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHStringFunctions
     {
-        //This function converts a String to its ASCII number representation. Hex numbers can be escaped by '\'. The null terminator is not included in the array.
-        public static int[] aIConvertStringToNumberArray(String qString)
+        //This function converts a byte array to a string. Any non ascii character will be converted to a hex number with format '\0x00'
+        public static String sConvertByteArrayToString(byte [] qaByteArray)
         {
-            List<int> LINumbers = new List<int>();
+            String sReturnString = "";
+            foreach(byte actByte in qaByteArray)
+            {
+                if(actByte<' '||actByte>'~')                                                        //actbyte smaller than space or bigger ~
+                {
+                    sReturnString += "\\0x" + actByte.ToString("X2");
+                }
+                else
+                {
+                    sReturnString += (char)actByte;
+                }
+            }
+            return sReturnString;
+        }
+
+        //This function converts a String to its ASCII number representation. Hex numbers can be escaped by '\' (format \0x00). The null terminator is not included in the array.
+        public static byte[] aConvertStringToByteArray(String qString)
+        {
+            List<byte> LNumbers = new List<byte>();
             int iStringCnt = 0;
             while (iStringCnt < qString.Length)
             {
-                if ((qString[iStringCnt] == '\\'))                                                  //Check for escape character
+                if ((qString[iStringCnt] == '\\')&& qString.Length > iStringCnt+4)                  //Check for escape character
                 {
-                    if ((iStringCnt + 4 < qString.Length) && qString[iStringCnt + 1] == '0' && qString[iStringCnt + 2] == 'x')    //Check for Hex number
+                    if (qString[iStringCnt + 1] == '0' && qString[iStringCnt + 2] == 'x')           //Check for Hex number
                     {
-                        LINumbers.Add(int.Parse("" + qString[iStringCnt + 3] + qString[iStringCnt + 4], NumberStyles.HexNumber));
+                        LNumbers.Add((byte)int.Parse("" + qString[iStringCnt + 3] + qString[iStringCnt + 4], NumberStyles.HexNumber));
                         iStringCnt += 5;
+                    }
+                    else                                                                            //Usual char
+                    {
+                        LNumbers.Add((byte)qString[iStringCnt]);
+                        iStringCnt++;
                     }
                 }
                 else                                                                                //Usual char
                 {
-                    LINumbers.Add((int)qString[iStringCnt]);
+                    LNumbers.Add((byte)qString[iStringCnt]);
                     iStringCnt++;
                 }
             }
-            return LINumbers.ToArray();
+            return LNumbers.ToArray();
         }
 
         //This function returns the extention of a file
