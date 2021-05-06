@@ -39,6 +39,21 @@ namespace LHCommonFunctions.Source
             return sReturnString;
         }
 
+        //This function returns the string representation of a uint32 IP
+        public static String sConvertIpAddressToString(UInt32 qu32Ip)
+        {
+            String sRetrunString = "";
+            byte[] aIpBytes = BitConverter.GetBytes(qu32Ip);
+            sRetrunString += aIpBytes[0].ToString();
+            sRetrunString += ".";
+            sRetrunString += aIpBytes[1].ToString();
+            sRetrunString += ".";
+            sRetrunString += aIpBytes[2].ToString();
+            sRetrunString += ".";
+            sRetrunString += aIpBytes[3].ToString();
+            return sRetrunString;
+        }
+
         //This function converts a String to its ASCII number representation. Hex numbers can be escaped by '\' (format \0x00). The null terminator is not included in the array.
         public static byte[] aConvertStringToByteArray(String qString)
         {
@@ -66,6 +81,30 @@ namespace LHCommonFunctions.Source
                 }
             }
             return LNumbers.ToArray();
+        }
+
+        //This function converts a IP-String to a uint32 IP 
+        public static UInt32 u32ConvertStringToIpAddress(String qsIP)
+        {
+            try
+            {
+                UInt32 u32ReturnIP = 0;
+                String[] aSplitStrings = qsIP.Split('.');
+
+                u32ReturnIP += (UInt32)(byte.Parse(aSplitStrings[3]));
+                u32ReturnIP = u32ReturnIP << 8;
+                u32ReturnIP += (UInt32)(byte.Parse(aSplitStrings[2]));
+                u32ReturnIP = u32ReturnIP << 8;
+                u32ReturnIP += (UInt32)(byte.Parse(aSplitStrings[1]));
+                u32ReturnIP = u32ReturnIP << 8;
+                u32ReturnIP += (UInt32)(byte.Parse(aSplitStrings[0]));
+
+                return u32ReturnIP;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         //This function returns the extention of a file
