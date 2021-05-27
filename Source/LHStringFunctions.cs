@@ -21,13 +21,25 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHStringFunctions
     {
-        //This function converts a byte array to a string. Any non ascii character will be converted to a hex number with format '\0x00'
-        public static String sConvertByteArrayToString(byte [] qaByteArray)
+        /***********************************************************************************************
+        * 
+        * Constants
+        * 
+        **********************************************************************************************/
+        public const int I_CODEPAGE_ISO_8859_1 = 28591; //Codepage of ISO 8859-1
+
+        /***********************************************************************************************
+        * 
+        * Functions
+        * 
+        **********************************************************************************************/
+        //This function converts a byte array to a string. Any non ISO 8859-1 character will be converted to a hex number with format '\0x00'
+        public static String sConvertByteArrayToString(byte[] qaByteArray)
         {
             String sReturnString = "";
-            foreach(byte actByte in qaByteArray)
+            foreach (byte actByte in qaByteArray)
             {
-                if(actByte<' '||actByte>'~')                                                        //actbyte smaller than space or bigger ~
+                if (actByte < ' ' || (actByte >= 0x7F && actByte <= 0x9F))                                                        //escape non ISO 8859-1 chars
                 {
                     sReturnString += "\\0x" + actByte.ToString("X2");
                 }
@@ -54,14 +66,14 @@ namespace LHCommonFunctions.Source
             return sRetrunString;
         }
 
-        //This function converts a String to its ASCII number representation. Hex numbers can be escaped by '\' (format \0x00). The null terminator is not included in the array.
+        //This function converts a String to its ISO 8859-1 number representation. Hex numbers can be escaped by '\' (format \0x00). The null terminator is not included in the array.
         public static byte[] aConvertStringToByteArray(String qString)
         {
             List<byte> LNumbers = new List<byte>();
             int iStringCnt = 0;
             while (iStringCnt < qString.Length)
             {
-                if ((qString[iStringCnt] == '\\')&& qString.Length > iStringCnt+4)                  //Check for escape character
+                if ((qString[iStringCnt] == '\\') && qString.Length > iStringCnt + 4)                  //Check for escape character
                 {
                     if (qString[iStringCnt + 1] == '0' && qString[iStringCnt + 2] == 'x')           //Check for Hex number
                     {

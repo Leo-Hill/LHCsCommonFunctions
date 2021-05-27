@@ -70,7 +70,7 @@ namespace LHCommonFunctions.Source
                 else if (parameterType == typeof(String))
                 {
                     String sString = ((String)qObject);
-                    Array.Copy(Encoding.ASCII.GetBytes(sString), 0, qaTargetArray, qiTargetArrayStartIndex, sString.Length);
+                    Array.Copy(Encoding.GetEncoding(LHStringFunctions.I_CODEPAGE_ISO_8859_1).GetBytes(sString), 0, qaTargetArray, qiTargetArrayStartIndex, sString.Length);
                 }
                 else
                 {
