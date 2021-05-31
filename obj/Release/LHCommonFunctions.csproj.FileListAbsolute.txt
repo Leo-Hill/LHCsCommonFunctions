@@ -4,3 +4,8 @@ C:\Users\lehi\Documents\EigeneProgramme\WPF_Libs\LHWpfCommonFunctions\obj\Releas
 C:\Users\lehi\Documents\EigeneProgramme\WPF_Libs\LHWpfCommonFunctions\obj\Release\LHCommonFunctions.csproj.CoreCompileInputs.cache
 C:\Users\lehi\Documents\EigeneProgramme\WPF_Libs\LHWpfCommonFunctions\obj\Release\LHCommonFunctions.dll
 C:\Users\lehi\Documents\EigeneProgramme\WPF_Libs\LHWpfCommonFunctions\obj\Release\LHCommonFunctions.pdb
+C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Release\LHCommonFunctions.dll
+C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Release\LHCommonFunctions.pdb
+C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.csproj.CoreCompileInputs.cache
+C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.dll
+C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.pdb
