@@ -30,6 +30,19 @@ namespace LHCommonFunctions.Source
                     }
                     return u32;
                 }
+               else if (qType == typeof(UInt64))
+                {
+                    UInt64 u64 = 0;
+                    for (int iByteCnt = 0; iByteCnt < 8; iByteCnt++)
+                    {
+                        u64 += qaSourceArray[iSorceArrayStartIndex + iByteCnt];
+                        if (iByteCnt < 7)
+                        {
+                            u64 = u64 << 8;
+                        }
+                    }
+                    return u64;
+                }
                 else
                 {
                     throw new NotImplementedException("Unknown DataType");
@@ -58,6 +71,10 @@ namespace LHCommonFunctions.Source
                 else if (parameterType == typeof(float))
                 {
                     Array.Copy(BitConverter.GetBytes((float)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 4);
+                }
+                else if (parameterType == typeof(Int64))
+                {
+                    Array.Copy(BitConverter.GetBytes((Int64)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 8);
                 }
                 else if (parameterType == typeof(UInt64))
                 {

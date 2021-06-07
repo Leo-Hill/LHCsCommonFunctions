@@ -9,3 +9,9 @@ C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Release\LHCommonFun
 C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.csproj.CoreCompileInputs.cache
 C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.dll
 C:\Code\C#\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.pdb
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Release\LHCommonFunctions.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Release\LHCommonFunctions.pdb
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.csproj.CoreCompileInputs.cache
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.pdb
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.csprojAssemblyReference.cache

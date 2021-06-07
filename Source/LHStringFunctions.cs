@@ -26,7 +26,7 @@ namespace LHCommonFunctions.Source
         * Constants
         * 
         **********************************************************************************************/
-        public const int I_CODEPAGE_ISO_8859_1 = 28591; //Codepage of ISO 8859-1
+        public const int I_CODEPAGE_ISO_8859_1 = 28591;                                             //Codepage of ISO 8859-1
 
         /***********************************************************************************************
         * 
@@ -39,7 +39,7 @@ namespace LHCommonFunctions.Source
             String sReturnString = "";
             foreach (byte actByte in qaByteArray)
             {
-                if (actByte < ' ' || (actByte >= 0x7F && actByte <= 0x9F))                                                        //escape non ISO 8859-1 chars
+                if (actByte < ' ' || (actByte >= 0x7F && actByte <= 0x9F))                          //escape non ISO 8859-1 chars
                 {
                     sReturnString += "\\0x" + actByte.ToString("X2");
                 }
@@ -73,7 +73,7 @@ namespace LHCommonFunctions.Source
             int iStringCnt = 0;
             while (iStringCnt < qString.Length)
             {
-                if ((qString[iStringCnt] == '\\') && qString.Length > iStringCnt + 4)                  //Check for escape character
+                if ((qString[iStringCnt] == '\\') && qString.Length > iStringCnt + 4)               //Check for escape character
                 {
                     if (qString[iStringCnt + 1] == '0' && qString[iStringCnt + 2] == 'x')           //Check for Hex number
                     {

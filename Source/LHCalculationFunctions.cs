@@ -16,7 +16,7 @@ namespace LHCommonFunctions.Source
         //This function calculates the CRC32 checksum of a byte array
         public static UInt32 u32CalculateCrc(byte[] qaData)
         {
-            if (0 != (qaData.Length % 4))   //Check if the array can be divided by 4 in order to seperate the bytes to U32s
+            if (0 != (qaData.Length % 4))                                                           //Check if the array can be divided by 4 in order to seperate the bytes to U32s
             {
                 throw new Exception("CRC32 exception. Array can non be converted!");
             }
@@ -26,7 +26,7 @@ namespace LHCommonFunctions.Source
             UInt32 u32ActInputData;
             for (int iByteCnt = 0; iByteCnt < qaData.Length; iByteCnt+=4)
             {
-                u32ActInputData = BitConverter.ToUInt32(qaData, iByteCnt);  //Convert 4 bytes to 1 u32
+                u32ActInputData = BitConverter.ToUInt32(qaData, iByteCnt);                          //Convert 4 bytes to 1 u32
                 u32ActCrcValue = u32ActCrcValue ^ u32ActInputData;
                 u32ActBinaryIndex = 0;
                 while (u32ActBinaryIndex < 32)
