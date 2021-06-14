@@ -171,5 +171,20 @@ namespace LHCommonFunctions.Source
                 new NumberSubstitution(), TextFormattingMode.Display);
             return new Size(formattedText.Width, formattedText.Height);
         }
+
+        //This function replaces invalid chars in a filename with the qcReplacement
+        public static String sReplaceInvalidCharactersInFileName(String qsFileName)
+        {
+            char[] acInvalidChars = Path.GetInvalidFileNameChars();   //Get invalid filename chars
+
+            foreach (char c in acInvalidChars)
+            {
+                if (qsFileName.Contains(c))
+                {
+                    qsFileName = qsFileName.Remove(c);
+                }
+            }
+            return qsFileName;
+        }
     }
 }
