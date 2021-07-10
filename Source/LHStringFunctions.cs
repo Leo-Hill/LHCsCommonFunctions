@@ -186,5 +186,18 @@ namespace LHCommonFunctions.Source
             }
             return qsFileName;
         }
+    
+        //This function converts a timespan to a string "HH:mm:SS". HH is in total hours -> can be > 23
+        public static String sTimeSpanToString(TimeSpan qTimeSpan)
+        {
+            String sReturnString;
+            sReturnString = (qTimeSpan.Days + qTimeSpan.Hours).ToString("00");
+            sReturnString += ":";
+            sReturnString += qTimeSpan.Minutes.ToString("00");
+            sReturnString += ":";
+            sReturnString += qTimeSpan.Seconds.ToString("00");
+            return sReturnString;
+        }
+    
     }
 }

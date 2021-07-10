@@ -14,4 +14,3 @@ C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Release\LHCommo
 C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.csproj.CoreCompileInputs.cache
 C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.dll
 C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.pdb
-C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Release\LHCommonFunctions.csproj.AssemblyReference.cache
