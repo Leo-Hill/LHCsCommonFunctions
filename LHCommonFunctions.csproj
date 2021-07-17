@@ -89,6 +89,7 @@
     <Compile Include="Source\LHStringFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\LHStructs.cs" />
+    <Compile Include="Source\LHTraceFunctions.cs" />
     <Compile Include="Source\LHXmlFunctions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
