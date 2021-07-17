@@ -81,8 +81,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Classes\Class_LogFile.cs" />
+    <Compile Include="Source\Classes\Class_RelayCommand.cs" />
+    <Compile Include="Source\Classes\Class_ViewModelBase.cs" />
+    <Compile Include="Source\Classes\CustomConverters.cs" />
     <Compile Include="Source\LHCalculationFunctions.cs" />
-    <Compile Include="Source\LHClasses.cs" />
+    <Compile Include="Source\Classes\Class_Validator.cs" />
     <Compile Include="Source\LHColorFunctions.cs" />
     <Compile Include="Source\LHMemoryFunctions.cs" />
     <Compile Include="Source\LHMiscFunctions.cs" />
@@ -92,5 +96,6 @@
     <Compile Include="Source\LHTraceFunctions.cs" />
     <Compile Include="Source\LHXmlFunctions.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
