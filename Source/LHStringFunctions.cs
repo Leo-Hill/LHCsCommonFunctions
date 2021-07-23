@@ -159,7 +159,7 @@ namespace LHCommonFunctions.Source
         }
 
         //This function calculates the pixelsize of a textblock and returns the size
-        public static Size SZMeasureString(TextBlock qTextBlock)
+        public static System.Windows.Size SZMeasureString(TextBlock qTextBlock)
         {
             FormattedText formattedText = new FormattedText(
                 qTextBlock.Text,
@@ -169,7 +169,7 @@ namespace LHCommonFunctions.Source
                 qTextBlock.FontSize,
                 Brushes.Black,
                 new NumberSubstitution(), TextFormattingMode.Display);
-            return new Size(formattedText.Width, formattedText.Height);
+            return new System.Windows.Size(formattedText.Width, formattedText.Height);
         }
 
         //This function replaces invalid chars in a filename with the qcReplacement
