@@ -191,7 +191,7 @@ namespace LHCommonFunctions.Source
         public static String sTimeSpanToString(TimeSpan qTimeSpan)
         {
             String sReturnString;
-            sReturnString = (qTimeSpan.Days + qTimeSpan.Hours).ToString("00");
+            sReturnString = (qTimeSpan.Days*24 + qTimeSpan.Hours).ToString("00");
             sReturnString += ":";
             sReturnString += qTimeSpan.Minutes.ToString("00");
             sReturnString += ":";
