@@ -24,7 +24,7 @@ namespace LHCommonFunctions.Source
             UInt32 u32CrcPoly = 0x4C11DB7;                                                          //Crc polynom
             UInt32 u32ActBinaryIndex;                                                               //Current bit of the crc value processing
             UInt32 u32ActInputData;
-            for (int iByteCnt = 0; iByteCnt < qaData.Length; iByteCnt+=4)
+            for (int iByteCnt = 0; iByteCnt < qaData.Length; iByteCnt += 4)
             {
                 u32ActInputData = BitConverter.ToUInt32(qaData, iByteCnt);                          //Convert 4 bytes to 1 u32
                 u32ActCrcValue = u32ActCrcValue ^ u32ActInputData;
@@ -44,5 +44,27 @@ namespace LHCommonFunctions.Source
             }
             return u32ActCrcValue;
         }
+
+        //This function checks, if the qDouble is an integer/has decimals
+        public static bool bDoubleHasDecimals(double qdDouble, double qdEpsilon = 0.0001)
+        {
+            if ((qdDouble % 1) < qdEpsilon)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //This function calculates cm to points
+        public static double dCmToPt(double qdCm, int qiInchPerPoint = 72)
+        {
+            double dResult;
+            dResult = (qdCm / 2.54) * qiInchPerPoint;
+            return dResult;
+        }
+
     }
 }
