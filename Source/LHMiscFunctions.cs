@@ -17,6 +17,17 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHMiscFunctions
     {
+        //This function centers the qWindow in the screen
+        public static void vCenterWindowOnScreen(Window qWindow)
+        {
+            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            double windowWidth = qWindow.Width;
+            double windowHeight = qWindow.Height;
+            qWindow.Left = (screenWidth / 2) - (windowWidth / 2);
+            qWindow.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
+
         //This function deletes all files in a directory and subdirectory recursive
         public static void vDeleteAllFilesInDirectory(String qsPath)
         {
@@ -49,7 +60,5 @@ namespace LHCommonFunctions.Source
             }
             return ListSortDirection.Ascending;
         }
-
-      
     }
 }
