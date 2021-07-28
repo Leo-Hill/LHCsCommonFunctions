@@ -36,7 +36,6 @@ namespace LHCommonFunctions.Source
             qExcelChartObject.Height = LHCalculationFunctions.dCmToPt(15);
 
             //Plot area settings
-
             //Size and position of the plot area
             ExcelChart.PlotArea.Width = LHCalculationFunctions.dCmToPt(20);
             ExcelChart.PlotArea.Height = LHCalculationFunctions.dCmToPt(14);
@@ -61,14 +60,37 @@ namespace LHCommonFunctions.Source
             ExcelAxisY.TickLabels.Font.Size = 14;
             ExcelAxisX.TickLabels.Font.FontStyle = "Bold";
             ExcelAxisY.TickLabels.Font.FontStyle = "Bold";
+            ExcelAxisX.MajorTickMark = Excel.XlTickMark.xlTickMarkNone;
+            ExcelAxisY.MajorTickMark = Excel.XlTickMark.xlTickMarkNone;
             //Axis range
+            //Axis-X
+            ExcelAxisX.TickLabels.NumberFormat = "hh:mm";
+            //Axis-X Min
+            DateTime DTAxisXMin = DateTime.FromOADate(ExcelAxisX.MinimumScale);   //Get the minimum time of the X Axis
+            DTAxisXMin = DTAxisXMin.AddMinutes(-DTAxisXMin.Minute);   //Set the minute to 0
+            DTAxisXMin = DTAxisXMin.AddSeconds(-DTAxisXMin.Second);   //Set the minute to 0
+            DTAxisXMin = DTAxisXMin.AddMilliseconds(-DTAxisXMin.Millisecond);   //Set the milliseconds to 0
+            ExcelAxisX.MinimumScale = DTAxisXMin.ToOADate();
+            //Axis-X Max
+            DateTime DTAxisXMax = DateTime.FromOADate(ExcelAxisX.MinimumScale);   //Get the maximum time of the X Axis
+            DTAxisXMax = DTAxisXMax.AddHours(1);   //Set the hour to the next hour
+            DTAxisXMax = DTAxisXMax.AddMinutes(-DTAxisXMax.Minute);   //Set the minute to 0
+            DTAxisXMax = DTAxisXMax.AddSeconds(-DTAxisXMax.Second);   //Set the minute to 0
+            DTAxisXMax = DTAxisXMax.AddMilliseconds(-DTAxisXMax.Millisecond);   //Set the milliseconds to 0
+            ExcelAxisX.MaximumScale = DTAxisXMax.ToOADate();
+            ExcelAxisX.MajorUnit = (DTAxisXMax.ToOADate() - DTAxisXMin.ToOADate())/4;
+
+            //Axis-Y Min
             ExcelAxisY.MinimumScale = 0;
             ExcelAxisY.TickLabels.NumberFormat = "0";
+            //Axis-Y Max
             double dAxisYMax = ExcelAxisY.MaximumScale;
             double dAxisYMaxPow = Math.Floor(Math.Log10(dAxisYMax));  //Get the pow of 10 of the maximum value
             dAxisYMax = Math.Floor(dAxisYMax / Math.Pow(10, dAxisYMaxPow)); //Get the first digit of the max value
             dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);  //Calculate the new Y-Max value
             ExcelAxisY.MaximumScale = dAxisYMax; //Set the new Y-Max value
+            ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale-ExcelAxisY.MinimumScale)/4;
+
 
             //Grid
             //Major X
