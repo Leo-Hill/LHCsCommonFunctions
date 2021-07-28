@@ -28,6 +28,28 @@ namespace LHCommonFunctions.Source
             qWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
+        //This function checks if a file is locked/opened
+        public static bool bFileIsLocked(String qFilePath)
+        {
+            FileInfo fileInfo = new FileInfo(qFilePath);
+            try
+            {
+                using (FileStream stream = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            return false; //File is not locked
+        }
+
         //This function deletes all files in a directory and subdirectory recursive
         public static void vDeleteAllFilesInDirectory(String qsPath)
         {

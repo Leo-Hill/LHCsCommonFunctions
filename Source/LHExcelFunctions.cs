@@ -78,19 +78,25 @@ namespace LHCommonFunctions.Source
             DTAxisXMax = DTAxisXMax.AddSeconds(-DTAxisXMax.Second);   //Set the minute to 0
             DTAxisXMax = DTAxisXMax.AddMilliseconds(-DTAxisXMax.Millisecond);   //Set the milliseconds to 0
             ExcelAxisX.MaximumScale = DTAxisXMax.ToOADate();
-            ExcelAxisX.MajorUnit = (DTAxisXMax.ToOADate() - DTAxisXMin.ToOADate())/4;
+            ExcelAxisX.MajorUnit = (DTAxisXMax.ToOADate() - DTAxisXMin.ToOADate()) / 4;
 
             //Axis-Y Min
             ExcelAxisY.MinimumScale = 0;
-            ExcelAxisY.TickLabels.NumberFormat = "0";
             //Axis-Y Max
             double dAxisYMax = ExcelAxisY.MaximumScale;
             double dAxisYMaxPow = Math.Floor(Math.Log10(dAxisYMax));  //Get the pow of 10 of the maximum value
             dAxisYMax = Math.Floor(dAxisYMax / Math.Pow(10, dAxisYMaxPow)); //Get the first digit of the max value
             dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);  //Calculate the new Y-Max value
             ExcelAxisY.MaximumScale = dAxisYMax; //Set the new Y-Max value
-            ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale-ExcelAxisY.MinimumScale)/4;
-
+            ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale - ExcelAxisY.MinimumScale) / 4;
+            if (dAxisYMax > 1)
+            {
+                ExcelAxisY.TickLabels.NumberFormat = "0";
+            }
+            else
+            {
+                ExcelAxisY.TickLabels.NumberFormat = "##.##0,0";
+            }
 
             //Grid
             //Major X
