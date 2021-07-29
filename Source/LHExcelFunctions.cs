@@ -18,7 +18,7 @@ namespace LHCommonFunctions.Source
     {
 
         //This function styles a line chart
-        public static void vStyleLineChart(Excel.ChartObject qExcelChartObject)
+        public static void vStyleLineChart(Excel.ChartObject qExcelChartObject,DateTime qDTMinTimestamp, DateTime qDTMaxTimestamp)
         {
             //Excel objects
             Excel.Chart ExcelChart;
@@ -66,13 +66,13 @@ namespace LHCommonFunctions.Source
             //Axis-X
             ExcelAxisX.TickLabels.NumberFormat = "hh:mm";
             //Axis-X Min
-            DateTime DTAxisXMin = DateTime.FromOADate(ExcelAxisX.MinimumScale);   //Get the minimum time of the X Axis
+            DateTime DTAxisXMin = qDTMinTimestamp;  //Minumum timestanp of the values
             DTAxisXMin = DTAxisXMin.AddMinutes(-DTAxisXMin.Minute);   //Set the minute to 0
             DTAxisXMin = DTAxisXMin.AddSeconds(-DTAxisXMin.Second);   //Set the minute to 0
             DTAxisXMin = DTAxisXMin.AddMilliseconds(-DTAxisXMin.Millisecond);   //Set the milliseconds to 0
             ExcelAxisX.MinimumScale = DTAxisXMin.ToOADate();
             //Axis-X Max
-            DateTime DTAxisXMax = DateTime.FromOADate(ExcelAxisX.MinimumScale);   //Get the maximum time of the X Axis
+            DateTime DTAxisXMax = qDTMaxTimestamp; //Maximum timestamp of the values
             DTAxisXMax = DTAxisXMax.AddHours(1);   //Set the hour to the next hour
             DTAxisXMax = DTAxisXMax.AddMinutes(-DTAxisXMax.Minute);   //Set the minute to 0
             DTAxisXMax = DTAxisXMax.AddSeconds(-DTAxisXMax.Second);   //Set the minute to 0
