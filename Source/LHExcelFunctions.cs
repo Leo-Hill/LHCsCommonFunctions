@@ -16,14 +16,52 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHExcelFunctions
     {
+        //This function combines multiple excel files to one file separated as sheets
+        public static void vCombineExcelFiles(String[] qasFilePathsSource, String qsFilePathDestination)
+        {
+            //Excel objects
+            Excel.Application ExcelApp;
+            Excel.Workbook ExcelWorkBookSource = null, ExcelWorkBookDestination = null;
+            Excel.Worksheet ExcelWorkSheetSource = null, ExcelWorkSheetDestination = null;
+
+            //Primitive
+            int iDestinationSheetCnt = 0;   //Counter for the destination sheet
+
+            ExcelApp = new Excel.Application();                                                 //Create a new excel application
+            ExcelApp.DisplayAlerts = false;
+            ExcelWorkBookDestination = ExcelApp.Workbooks.Add(); //Create a new workbook
+
+            foreach (String actFilePath in qasFilePathsSource)
+            {
+                iDestinationSheetCnt++;
+                ExcelWorkBookSource = ExcelApp.Workbooks.Open(actFilePath);
+                ExcelWorkSheetSource = (Excel.Worksheet)ExcelWorkBookSource.Worksheets[1];
+                ExcelWorkSheetSource.Copy(ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt]);
+            }
+
+            ExcelWorkSheetDestination = ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt+1];
+            ExcelWorkSheetDestination.Delete();
+
+            //Save the excel file
+            ExcelWorkBookDestination.SaveAs(qsFilePathDestination, Excel.XlFileFormat.xlWorkbookDefault);
+            ExcelWorkBookDestination.Close(true);
+            ExcelWorkBookSource.Close(false);
+            ExcelApp.Quit();
+
+            //Clean up excel objects
+            Marshal.ReleaseComObject(ExcelWorkBookSource);
+            Marshal.ReleaseComObject(ExcelWorkBookDestination);
+            Marshal.ReleaseComObject(ExcelWorkSheetSource);
+            Marshal.ReleaseComObject(ExcelWorkSheetDestination);
+            Marshal.ReleaseComObject(ExcelApp);
+        }
 
         //This function styles a line chart
-        public static void vStyleLineChart(Excel.ChartObject qExcelChartObject,DateTime qDTMinTimestamp, DateTime qDTMaxTimestamp)
+        public static void vStyleLineChart(Excel.ChartObject qExcelChartObject, DateTime qDTMinTimestamp, DateTime qDTMaxTimestamp)
         {
             //Excel objects
             Excel.Chart ExcelChart;
             Excel.Axis ExcelAxisX, ExcelAxisY;
-
 
             ExcelChart = qExcelChartObject.Chart; //Chart of the chart object
 
