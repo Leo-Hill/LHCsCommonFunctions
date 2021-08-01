@@ -47,7 +47,7 @@ namespace LHCommonFunctions.Source
                 //or does not exist (has already been processed)
                 return true;
             }
-            return false; //File is not locked
+            return false;                                                                           //File is not locked
         }
 
         //This function deletes all files in a directory and subdirectory recursive

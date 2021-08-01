@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -25,11 +25,11 @@ namespace LHCommonFunctions.Source
             Excel.Worksheet ExcelWorkSheetSource = null, ExcelWorkSheetDestination = null;
 
             //Primitive
-            int iDestinationSheetCnt = 0;   //Counter for the destination sheet
+            int iDestinationSheetCnt = 0;                                                           //Counter for the destination sheet
 
-            ExcelApp = new Excel.Application();                                                 //Create a new excel application
+            ExcelApp = new Excel.Application();                                                     //Create a new excel application
             ExcelApp.DisplayAlerts = false;
-            ExcelWorkBookDestination = ExcelApp.Workbooks.Add(); //Create a new workbook
+            ExcelWorkBookDestination = ExcelApp.Workbooks.Add();                                    //Create a new workbook
 
             foreach (String actFilePath in qasFilePathsSource)
             {
@@ -63,11 +63,11 @@ namespace LHCommonFunctions.Source
             Excel.Chart ExcelChart;
             Excel.Axis ExcelAxisX, ExcelAxisY;
 
-            ExcelChart = qExcelChartObject.Chart; //Chart of the chart object
+            ExcelChart = qExcelChartObject.Chart;                                                   //Chart of the chart object
 
             //General chart settings
-            ExcelChart.ChartType = Excel.XlChartType.xlXYScatterSmoothNoMarkers;            //Chart type
-            ExcelChart.DisplayBlanksAs = Excel.XlDisplayBlanksAs.xlInterpolated;            //Interpolate empty cells
+            ExcelChart.ChartType = Excel.XlChartType.xlXYScatterSmoothNoMarkers;                    //Chart type
+            ExcelChart.DisplayBlanksAs = Excel.XlDisplayBlanksAs.xlInterpolated;                    //Interpolate empty cells
             ExcelChart.HasTitle = false;
             //Size of the chart
             qExcelChartObject.Width = LHCalculationFunctions.dCmToPt(25);
@@ -104,17 +104,17 @@ namespace LHCommonFunctions.Source
             //Axis-X
             ExcelAxisX.TickLabels.NumberFormat = "hh:mm";
             //Axis-X Min
-            DateTime DTAxisXMin = qDTMinTimestamp;  //Minumum timestanp of the values
-            DTAxisXMin = DTAxisXMin.AddMinutes(-DTAxisXMin.Minute);   //Set the minute to 0
-            DTAxisXMin = DTAxisXMin.AddSeconds(-DTAxisXMin.Second);   //Set the minute to 0
-            DTAxisXMin = DTAxisXMin.AddMilliseconds(-DTAxisXMin.Millisecond);   //Set the milliseconds to 0
+            DateTime DTAxisXMin = qDTMinTimestamp;                                                  //Minumum timestanp of the values
+            DTAxisXMin = DTAxisXMin.AddMinutes(-DTAxisXMin.Minute);                                 //Set the minute to 0
+            DTAxisXMin = DTAxisXMin.AddSeconds(-DTAxisXMin.Second);                                 //Set the minute to 0
+            DTAxisXMin = DTAxisXMin.AddMilliseconds(-DTAxisXMin.Millisecond);                       //Set the milliseconds to 0
             ExcelAxisX.MinimumScale = DTAxisXMin.ToOADate();
             //Axis-X Max
-            DateTime DTAxisXMax = qDTMaxTimestamp; //Maximum timestamp of the values
-            DTAxisXMax = DTAxisXMax.AddHours(1);   //Set the hour to the next hour
-            DTAxisXMax = DTAxisXMax.AddMinutes(-DTAxisXMax.Minute);   //Set the minute to 0
-            DTAxisXMax = DTAxisXMax.AddSeconds(-DTAxisXMax.Second);   //Set the minute to 0
-            DTAxisXMax = DTAxisXMax.AddMilliseconds(-DTAxisXMax.Millisecond);   //Set the milliseconds to 0
+            DateTime DTAxisXMax = qDTMaxTimestamp;                                                  //Maximum timestamp of the values
+            DTAxisXMax = DTAxisXMax.AddHours(1);                                                    //Set the hour to the next hour
+            DTAxisXMax = DTAxisXMax.AddMinutes(-DTAxisXMax.Minute);                                 //Set the minute to 0
+            DTAxisXMax = DTAxisXMax.AddSeconds(-DTAxisXMax.Second);                                 //Set the minute to 0
+            DTAxisXMax = DTAxisXMax.AddMilliseconds(-DTAxisXMax.Millisecond);                       //Set the milliseconds to 0
             ExcelAxisX.MaximumScale = DTAxisXMax.ToOADate();
             ExcelAxisX.MajorUnit = (DTAxisXMax.ToOADate() - DTAxisXMin.ToOADate()) / 4;
 
@@ -122,10 +122,10 @@ namespace LHCommonFunctions.Source
             ExcelAxisY.MinimumScale = 0;
             //Axis-Y Max
             double dAxisYMax = ExcelAxisY.MaximumScale;
-            double dAxisYMaxPow = Math.Floor(Math.Log10(dAxisYMax));  //Get the pow of 10 of the maximum value
-            dAxisYMax = Math.Floor(dAxisYMax / Math.Pow(10, dAxisYMaxPow)); //Get the first digit of the max value
-            dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);  //Calculate the new Y-Max value
-            ExcelAxisY.MaximumScale = dAxisYMax; //Set the new Y-Max value
+            double dAxisYMaxPow = Math.Floor(Math.Log10(dAxisYMax));                                //Get the pow of 10 of the maximum value
+            dAxisYMax = Math.Floor(dAxisYMax / Math.Pow(10, dAxisYMaxPow));                         //Get the first digit of the max value
+            dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);                               //Calculate the new Y-Max value
+            ExcelAxisY.MaximumScale = dAxisYMax;                                                    //Set the new Y-Max value
             ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale - ExcelAxisY.MinimumScale) / 4;
             if (dAxisYMax > 1)
             {
@@ -149,7 +149,7 @@ namespace LHCommonFunctions.Source
             ExcelAxisY.MajorGridlines.Border.Weight = Excel.XlBorderWeight.xlHairline;
 
             //Series settings
-            foreach (Excel.Series series in ExcelChart.FullSeriesCollection()) //Loop through all series
+            foreach (Excel.Series series in ExcelChart.FullSeriesCollection())                      //Loop through all series
             {
                 series.Format.Line.Weight = 2.25f;
             }
