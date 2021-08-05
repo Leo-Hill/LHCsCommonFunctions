@@ -38,8 +38,8 @@ namespace LHCommonFunctions.Source
                 ExcelWorkSheetSource = (Excel.Worksheet)ExcelWorkBookSource.Worksheets[1];
                 ExcelWorkSheetSource.Copy(ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt]);
             }
-
-            ExcelWorkSheetDestination = ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt+1];
+            ExcelWorkBookDestination.Activate();
+            ExcelWorkSheetDestination = ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt + 1];
             ExcelWorkSheetDestination.Delete();
 
             //Save the excel file
