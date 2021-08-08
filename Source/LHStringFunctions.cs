@@ -198,6 +198,18 @@ namespace LHCommonFunctions.Source
             sReturnString += qTimeSpan.Seconds.ToString("00");
             return sReturnString;
         }
-    
+        //This function converts a timespan to a string "HH'h' mm'm' SS's'". HH is in total hours -> can be > 23
+        public static String sTimeSpanToStringWithChars(TimeSpan qTimeSpan)
+        {
+            String sReturnString;
+            sReturnString = (qTimeSpan.Days * 24 + qTimeSpan.Hours).ToString("00");
+            sReturnString += "h ";
+            sReturnString += qTimeSpan.Minutes.ToString("00");
+            sReturnString += "m ";
+            sReturnString += qTimeSpan.Seconds.ToString("00");
+            sReturnString += "s ";
+            return sReturnString;
+        }
+
     }
 }
