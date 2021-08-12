@@ -8,6 +8,61 @@ using System.Windows.Input;
 
 namespace LHCommonFunctions.Source
 {
+
+    //IVCs
+
+    //This converter converts a boolean values to a visibility inverted
+    public class IVCBooleanNotToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (true == (bool)value)
+            {
+                return Visibility.Collapsed;
+            }
+            return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    //This converter converts a boolean to a 'x' if it is true
+    public class IVCBooleanToString : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (true == (bool)value)
+            {
+                return "x";
+            }
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    //This converter converts a datetime to text
+    public class IVCDateTimeToString : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            DateTime dateTime = (DateTime)value;                                                    //Input value is Datetime
+            return dateTime.ToShortDateString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Binding.DoNothing;
+        }
+    }
+
+
     //This converter converts an routedcommand's keyboard shortcut to a text
     public class IVCRoutedCommandToInputGestureText : IValueConverter
     {
@@ -38,20 +93,8 @@ namespace LHCommonFunctions.Source
         }
     }
 
-    //This converter converts a datetime to text
-    public class IVCDateTimeToString : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            DateTime dateTime = (DateTime)value;                                                    //Input value is Datetime
-            return dateTime.ToShortDateString();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
-    }
+   
+    //MVCs
 
     //This converter converts multiple boolean values to a visibility (logic and)
     public class MVCBooleanAndToVisibility : IMultiValueConverter
@@ -80,6 +123,8 @@ namespace LHCommonFunctions.Source
             throw new NotImplementedException();
         }
     }
+
+   
 
     //This converter converts multiple boolean values to a visibility (logic or)
     public class MVCBooleanOrToVisibility : IMultiValueConverter
