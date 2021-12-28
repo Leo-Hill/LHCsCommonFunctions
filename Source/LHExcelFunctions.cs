@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -33,10 +34,16 @@ namespace LHCommonFunctions.Source
 
             foreach (String actFilePath in qasFilePathsSource)
             {
-                iDestinationSheetCnt++;
-                ExcelWorkBookSource = ExcelApp.Workbooks.Open(actFilePath);
-                ExcelWorkSheetSource = (Excel.Worksheet)ExcelWorkBookSource.Worksheets[1];
-                ExcelWorkSheetSource.Copy(ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt]);
+                if (File.Exists(actFilePath))
+                {
+                    ExcelWorkBookSource = ExcelApp.Workbooks.Open(actFilePath);
+                    for (int iSourceSheetCnt = 1; iSourceSheetCnt <= ExcelWorkBookSource.Worksheets.Count; iSourceSheetCnt++)
+                    {
+                        iDestinationSheetCnt++;
+                        ExcelWorkSheetSource = (Excel.Worksheet)ExcelWorkBookSource.Worksheets[iSourceSheetCnt];
+                        ExcelWorkSheetSource.Copy(ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt]);
+                    }
+                }
             }
             ExcelWorkBookDestination.Activate();
             ExcelWorkSheetDestination = ExcelWorkBookDestination.Worksheets[iDestinationSheetCnt + 1];
