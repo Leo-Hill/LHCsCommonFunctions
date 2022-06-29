@@ -12,7 +12,7 @@ namespace LHCommonFunctions.Source
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //This function calls the property changed event of an indexed property
+        //This function calls the property changed event of a property
         public void OnPropertyChanged(String qsPropertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(qsPropertyName));

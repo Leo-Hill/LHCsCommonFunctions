@@ -62,6 +62,60 @@ namespace LHCommonFunctions.Source
         }
     }
 
+    //This converter converts a filter-string to a visibility depending on the passed parameter name
+    public class IVCFilterStringToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            String sFilter = (String)value;
+            sFilter = sFilter.ToLower();
+
+            String sViewName = (String)parameter;
+            sViewName = sViewName.ToLower();
+
+            String[] asFilters = sFilter.Split(' ');
+
+            if (String.IsNullOrEmpty(sFilter))
+            {
+                return Visibility.Visible;
+            }
+            if (String.IsNullOrEmpty(sViewName))
+            {
+                return Visibility.Visible;
+            }
+            foreach (String act_filter in asFilters)
+            {
+                if (false == String.IsNullOrEmpty(act_filter) && false == sViewName.Contains(act_filter))
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+            return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return "";
+        }
+    }
+
+    //This converter converts a boolean values to a visibility inverted
+    public class IVCInverseBoolean : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (true == (bool)value)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     //This converter converts an routedcommand's keyboard shortcut to a text
     public class IVCRoutedCommandToInputGestureText : IValueConverter
@@ -93,7 +147,8 @@ namespace LHCommonFunctions.Source
         }
     }
 
-   
+
+
     //MVCs
 
     //This converter converts multiple boolean values to a visibility (logic and)
@@ -123,8 +178,6 @@ namespace LHCommonFunctions.Source
             throw new NotImplementedException();
         }
     }
-
-   
 
     //This converter converts multiple boolean values to a visibility (logic or)
     public class MVCBooleanOrToVisibility : IMultiValueConverter
