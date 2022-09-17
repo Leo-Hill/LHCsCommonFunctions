@@ -18,6 +18,15 @@ namespace LHCommonFunctions.Source
         private const String DICT_XML_ITEM_ELEMENT_NAME = "item";
         private const String DICT_XML_ID_TAG = "id";
 
+        //This function creates a new xml file with an empty "root" node 
+        public static void vCreateXmlSettingsFile(String qsPath, String qsFilename)
+        {
+            XDocument XDExport = new XDocument();                                                   //Document to export
+            XElement XERoot = new XElement(DICT_XML_ROOT_ELEMENT_NAME);
+            XDExport.Add(XERoot);
+            XDExport.Save(qsPath + "\\" + qsFilename);                                              //Save the file 
+        }
+
         //This function converts a sorted dictionary to a xml file and exports the file
         public static void vExportDictionaryToXml(SortedDictionary<String, String> qSDExport, String qsPath, String qsFilename)
         {
