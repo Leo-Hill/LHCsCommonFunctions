@@ -1,0 +1,15 @@
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Debug\net6.0-windows\LHCommonFunctions.deps.json
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Debug\net6.0-windows\LHCommonFunctions.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\bin\Debug\net6.0-windows\LHCommonFunctions.pdb
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.csproj.AssemblyReference.cache
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\Interop.Microsoft.Office.Core.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\Interop.Microsoft.Office.Interop.Excel.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.csproj.ResolveComReference.cache
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.AssemblyInfoInputs.cache
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.AssemblyInfo.cs
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.csproj.CoreCompileInputs.cache
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\refint\LHCommonFunctions.dll
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\LHCommonFunctions.pdb
+C:\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\obj\Debug\net6.0-windows\ref\LHCommonFunctions.dll
