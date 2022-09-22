@@ -29,6 +29,24 @@ namespace LHCommonFunctions.Source
         }
     }
 
+    //This converter converts a boolean a visibility. In contrast to the default WPF converter, it will return hidden.
+    public class IVCBooleanToVisibilityHidden : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (true == (bool)value)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Hidden;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     //This converter converts a boolean to a 'x' if it is true
     public class IVCBooleanToString : IValueConverter
     {
