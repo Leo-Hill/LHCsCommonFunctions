@@ -51,6 +51,19 @@ namespace LHCommonFunctions.Source
             return sReturnString;
         }
 
+        //This function converts a byte array to a string containing hex numbers. You can define a prefix for every hex number (e.g. "0x)
+        public static String sConvertByteArrayToHexString(byte[] qaByteArray, String prefix = "")
+        {
+            String sReturnString = "";
+            foreach (byte actByte in qaByteArray)
+            {
+                {
+                    sReturnString += prefix + actByte.ToString("X2") + " ";
+                }
+            }
+            return sReturnString;
+        }
+
         //This function returns the string representation of a uint32 IP
         public static String sConvertIpAddressToString(UInt32 qu32Ip)
         {
@@ -186,18 +199,19 @@ namespace LHCommonFunctions.Source
             }
             return qsFileName;
         }
-    
+
         //This function converts a timespan to a string "HH:mm:SS". HH is in total hours -> can be > 23
         public static String sTimeSpanToString(TimeSpan qTimeSpan)
         {
             String sReturnString;
-            sReturnString = (qTimeSpan.Days*24 + qTimeSpan.Hours).ToString("00");
+            sReturnString = (qTimeSpan.Days * 24 + qTimeSpan.Hours).ToString("00");
             sReturnString += ":";
             sReturnString += qTimeSpan.Minutes.ToString("00");
             sReturnString += ":";
             sReturnString += qTimeSpan.Seconds.ToString("00");
             return sReturnString;
         }
+
         //This function converts a timespan to a string "HH'h' mm'm' SS's'". HH is in total hours -> can be > 23
         public static String sTimeSpanToStringWithChars(TimeSpan qTimeSpan)
         {

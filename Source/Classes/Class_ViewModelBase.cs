@@ -5,7 +5,7 @@ namespace LHCommonFunctions.Source
 {
     /***********************************************************************************************
     * 
-    * This class provides a base class for viem model classes.
+    * This class provides a base class for view model classes.
     * 
     **********************************************************************************************/
     public abstract class Class_ViewModelBase : INotifyPropertyChanged
