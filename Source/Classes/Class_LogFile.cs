@@ -22,12 +22,12 @@ namespace LHCommonFunctions.Source
         **********************************************************************************************/
 
         //Primitive
-        List<String> LsBufferedLogMessages;                                                         //List for storing log messages and writing them out later
-        String sFileName;                                                                           //Name of the file
+        private List<String> LsBufferedLogMessages;                                                         //List for storing log messages and writing them out later
+        private String sFileName;                                                                           //Name of the file
 
 
         //Objects
-        StreamWriter streamWriter;                                                                  //Stream for writing to the file
+        private StreamWriter streamWriter;                                                                  //Stream for writing to the file
 
 
         /***********************************************************************************************
@@ -41,10 +41,10 @@ namespace LHCommonFunctions.Source
             //Initialize variables
             //Primitive
             LsBufferedLogMessages = new List<String>();
-            sFileName = qsFolderPath +"/"+ DateTime.Now.ToString("yyyyMMdd_HHmmss_") + qsLogName + ".txt";    //Build the filename
+            sFileName = qsFolderPath + "/" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + qsLogName + ".txt";    //Build the filename
 
             //Check if the target directory exists
-            if(false==Directory.Exists(qsFolderPath))
+            if (false == Directory.Exists(qsFolderPath))
             {
                 Directory.CreateDirectory(qsFolderPath);
             }
@@ -56,6 +56,11 @@ namespace LHCommonFunctions.Source
         * Functions
         * 
         **********************************************************************************************/
+
+        public String sGetFileName()
+        {
+            return sFileName;
+        }
 
         //This function writes the qsMessage to the log file
         public void vLog(String qsMessage, bool qbTraceToDebugWindow = true)
