@@ -19,16 +19,16 @@ namespace LHCommonFunctions.Source
         private const String DICT_XML_ID_TAG = "id";
 
         //This function creates a new xml file with an empty "root" node 
-        public static void vCreateXmlSettingsFile(String qsPath, String qsFilename)
+        public static void vCreateXmlSettingsFile(String qsPath)
         {
             XDocument XDExport = new XDocument();                                                   //Document to export
             XElement XERoot = new XElement(DICT_XML_ROOT_ELEMENT_NAME);
             XDExport.Add(XERoot);
-            XDExport.Save(qsPath + "\\" + qsFilename);                                              //Save the file 
+            XDExport.Save(qsPath);                                              //Save the file 
         }
 
         //This function converts a sorted dictionary to a xml file and exports the file
-        public static void vExportDictionaryToXml(SortedDictionary<String, String> qSDExport, String qsPath, String qsFilename)
+        public static void vExportDictionaryToXml(SortedDictionary<String, String> qSDExport, String qsPath)
         {
             XDocument XDExport = new XDocument();                                                   //Document to export
             XElement XERoot = new XElement(DICT_XML_ROOT_ELEMENT_NAME);
@@ -39,14 +39,14 @@ namespace LHCommonFunctions.Source
                 XERoot.Add(XEInsert);
             }
             XDExport.Add(XERoot);
-            XDExport.Save(qsPath + "\\" + qsFilename);                                              //Save the file 
+            XDExport.Save(qsPath);                                              //Save the file 
 
         }
 
         //This function imports a xml file and converts it to a sorted dictionary
-        public static SortedDictionary<String, String> SDImportXmlToDictionary(String qsPath, String qsFilename)
+        public static SortedDictionary<String, String> SDImportXmlToDictionary(String qsPath)
         {
-            XDocument XDImport = XDocument.Load(qsPath + "\\" + qsFilename);                        //Load the xml file
+            XDocument XDImport = XDocument.Load(qsPath);                        //Load the xml file
             SortedDictionary<String, String> SDReturn = new SortedDictionary<String, String>();
             foreach (XElement actElement in XDImport.Descendants(DICT_XML_ITEM_ELEMENT_NAME))                           //Loop through xml childs 
             {
