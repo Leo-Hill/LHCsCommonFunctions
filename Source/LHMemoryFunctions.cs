@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHMemoryFunctions
     {
-        public static Object oCopyFromArrayReversed(byte[] qaSourceArray,int iSorceArrayStartIndex, Type qType)
+        public static Object oCopyFromArrayReversed(byte[] qaSourceArray, int iSorceArrayStartIndex, Type qType)
         {
             if (BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
             {
@@ -22,7 +23,7 @@ namespace LHCommonFunctions.Source
                     UInt32 u32 = 0;
                     for (int iByteCnt = 0; iByteCnt < 4; iByteCnt++)
                     {
-                        u32 += qaSourceArray[iSorceArrayStartIndex+iByteCnt];
+                        u32 += qaSourceArray[iSorceArrayStartIndex + iByteCnt];
                         if (iByteCnt < 3)
                         {
                             u32 = u32 << 8;
@@ -30,7 +31,7 @@ namespace LHCommonFunctions.Source
                     }
                     return u32;
                 }
-               else if (qType == typeof(UInt64))
+                else if (qType == typeof(UInt64))
                 {
                     UInt64 u64 = 0;
                     for (int iByteCnt = 0; iByteCnt < 8; iByteCnt++)
@@ -125,6 +126,23 @@ namespace LHCommonFunctions.Source
             else
             {
                 throw new NotImplementedException("Big endian architecture not supported!");
+            }
+        }
+
+        //This function reverses the endianess of the qObject
+        public static Object oReverseEdianess(Object qObject)
+        {
+            if (qObject.GetType() == typeof(UInt32))
+            {
+                UInt32 u32 = (UInt32)qObject;
+                byte[] aData = new byte[4];
+                vCopyToArray(u32, aData, 0);
+                u32 = (UInt32)oCopyFromArrayReversed(aData, 0, typeof(UInt32));
+                return u32;
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
         }
     }
