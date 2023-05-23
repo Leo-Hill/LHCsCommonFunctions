@@ -10,7 +10,7 @@ namespace LHCommonFunctions.Source
     * This class represents an intel hex file
     * 
     **********************************************************************************************/
-    public class LHIntelHex
+    public class Class_IntelHex
     {
         private List<DataBlock> LDataBlocks;                                        //This list contains data blocks (<StartAddress, Data>). A data block contains consecutive data. Empty spaces / skip in address will lead to multiple entries
 
@@ -32,7 +32,7 @@ namespace LHCommonFunctions.Source
         * Constructor
         * 
         **********************************************************************************************/
-        public LHIntelHex(String qsFileName)
+        public Class_IntelHex(String qsFileName)
         {
             StreamReader reader = new StreamReader(qsFileName);
             String sHexFileContent = reader.ReadToEnd();
@@ -145,7 +145,11 @@ namespace LHCommonFunctions.Source
 
             foreach (DataBlock Block in LDataBlocks)
             {
-                if (Block.u32StartAddress + Block.aData.Length >= u32EndAddress)
+                if (Block.u32StartAddress >= u32EndAddress)
+                {
+                    continue;
+                }
+                if (Block.u32StartAddress + Block.aData.Length >= u32EndAddress  )
                 {
                     //We only want to copy data up until the end address
                     byte[] aBytesInRange = new byte[u32EndAddress - Block.u32StartAddress];
