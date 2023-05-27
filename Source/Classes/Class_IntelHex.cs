@@ -106,8 +106,8 @@ namespace LHCommonFunctions.Source
                                 DBInsert.u32StartAddress = u32AddressOffset + u32AddressOfCurrentDataBlock;
                                 DBInsert.aData = LBytes.ToArray();
                                 LDataBlocks.Add(DBInsert);
-                                iPayloadSize += LDataBlocks.Count;
-                                LDataBlocks.Clear();
+                                iPayloadSize += LBytes.Count;
+                                LBytes.Clear();
                             }
                             break;
                         }
@@ -121,7 +121,7 @@ namespace LHCommonFunctions.Source
                                 DBInsert.u32StartAddress = u32AddressOffset + u32AddressOfCurrentDataBlock;
                                 DBInsert.aData = LBytes.ToArray();
                                 LDataBlocks.Add(DBInsert);
-                                iPayloadSize += LDataBlocks.Count;
+                                iPayloadSize += LBytes.Count;
                                 LBytes.Clear();
                             }
                             u32AddressOffset = (UInt32)(Convert.ToUInt16(sLine.Substring(9, 4), 16) << 16);
