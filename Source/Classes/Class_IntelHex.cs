@@ -27,6 +27,8 @@ namespace LHCommonFunctions.Source
             public byte[] aData;
         }
 
+        private int iPayloadSize = 0; //Size of the firmware data
+
         /***********************************************************************************************
         * 
         * Constructor
@@ -104,6 +106,8 @@ namespace LHCommonFunctions.Source
                                 DBInsert.u32StartAddress = u32AddressOffset + u32AddressOfCurrentDataBlock;
                                 DBInsert.aData = LBytes.ToArray();
                                 LDataBlocks.Add(DBInsert);
+                                iPayloadSize += LDataBlocks.Count;
+                                LDataBlocks.Clear();
                             }
                             break;
                         }
@@ -112,12 +116,13 @@ namespace LHCommonFunctions.Source
                             //Extended Linear Address Record
                             if (LBytes.Count > 0)
                             {
+                                //Complete the currently editing DataBlock
                                 DataBlock DBInsert;
                                 DBInsert.u32StartAddress = u32AddressOffset + u32AddressOfCurrentDataBlock;
                                 DBInsert.aData = LBytes.ToArray();
                                 LDataBlocks.Add(DBInsert);
+                                iPayloadSize += LDataBlocks.Count;
                                 LBytes.Clear();
-
                             }
                             u32AddressOffset = (UInt32)(Convert.ToUInt16(sLine.Substring(9, 4), 16) << 16);
                             break;
@@ -149,7 +154,7 @@ namespace LHCommonFunctions.Source
                 {
                     continue;
                 }
-                if (Block.u32StartAddress + Block.aData.Length >= u32EndAddress  )
+                if (Block.u32StartAddress + Block.aData.Length >= u32EndAddress)
                 {
                     //We only want to copy data up until the end address
                     byte[] aBytesInRange = new byte[u32EndAddress - Block.u32StartAddress];
@@ -162,6 +167,12 @@ namespace LHCommonFunctions.Source
                 }
             }
             return aBytesToReturn.ToArray();
+        }
+
+        //This gives you the size of the payload
+        public int iGetPayloadSize()
+        {
+            return iPayloadSize;
         }
     }
 }
