@@ -28,6 +28,22 @@ namespace LHCommonFunctions.Source
             qWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
+        //This function deletes all files in a directory and subdirectory recursive
+        public static void vDeleteAllFilesInDirectory(String qsPath)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(qsPath);
+
+            foreach (FileInfo fileInfo in directoryInfo.GetFiles())
+            {
+                fileInfo.Delete();
+            }
+
+            foreach (DirectoryInfo subDirectoryInfo in directoryInfo.GetDirectories())
+            {
+                vDeleteAllFilesInDirectory(subDirectoryInfo.FullName);
+            }
+        }
+
         //This function checks if a file is locked/opened
         public static bool bFileIsLocked(String qFilePath)
         {
@@ -50,20 +66,10 @@ namespace LHCommonFunctions.Source
             return false;                                                                           //File is not locked
         }
 
-        //This function deletes all files in a directory and subdirectory recursive
-        public static void vDeleteAllFilesInDirectory(String qsPath)
+        //This function returns the currently active window
+        public static Window GetActiveWindow()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(qsPath);
-
-            foreach (FileInfo fileInfo in directoryInfo.GetFiles())
-            {
-                fileInfo.Delete();
-            }
-
-            foreach(DirectoryInfo subDirectoryInfo in directoryInfo.GetDirectories())
-            {
-                vDeleteAllFilesInDirectory(subDirectoryInfo.FullName);
-            }
+            return Application.Current.Windows.OfType<Window>().SingleOrDefault(window => window.IsActive);
         }
 
         //This funcionreturns the name of a control, which invokded am command 
