@@ -6,8 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace LHCommonFunctions.Source
-{
+namespace LHCommonFunctions.Classes {
 
     //IVCs
 
@@ -65,7 +64,7 @@ namespace LHCommonFunctions.Source
         }
     }
 
-    //This converter converts a datetime to text
+    //This converter converts a date-time to text
     public class IVCDateTimeToString : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
