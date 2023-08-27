@@ -87,23 +87,23 @@ namespace LHCommonFunctions {
             ExcelChart.DisplayBlanksAs = Excel.XlDisplayBlanksAs.xlInterpolated;                    //Interpolate empty cells
             ExcelChart.HasTitle = false;
             //Size of the chart
-            excelChartObject.Width = Calculation.dCmToPt(25);
-            excelChartObject.Height = Calculation.dCmToPt(15);
+            excelChartObject.Width = Calculation.CmToPt(25);
+            excelChartObject.Height = Calculation.CmToPt(15);
 
             //Plot area settings
             //Size and position of the plot area
-            ExcelChart.PlotArea.Width = Calculation.dCmToPt(20);
-            ExcelChart.PlotArea.Height = Calculation.dCmToPt(14);
-            ExcelChart.PlotArea.Left = Calculation.dCmToPt(0.5);
-            ExcelChart.PlotArea.Top = Calculation.dCmToPt(0.5);
+            ExcelChart.PlotArea.Width = Calculation.CmToPt(20);
+            ExcelChart.PlotArea.Height = Calculation.CmToPt(14);
+            ExcelChart.PlotArea.Left = Calculation.CmToPt(0.5);
+            ExcelChart.PlotArea.Top = Calculation.CmToPt(0.5);
             //Plot area border
             ExcelChart.PlotArea.Border.Color = Color.Black;
             ExcelChart.PlotArea.Border.Weight = Excel.XlBorderWeight.xlMedium;
             //Legend
-            ExcelChart.Legend.Left = Calculation.dCmToPt(20);
-            ExcelChart.Legend.Top = Calculation.dCmToPt(1);
-            ExcelChart.Legend.Width = Calculation.dCmToPt(4);
-            ExcelChart.Legend.Height = Calculation.dCmToPt(12);
+            ExcelChart.Legend.Left = Calculation.CmToPt(20);
+            ExcelChart.Legend.Top = Calculation.CmToPt(1);
+            ExcelChart.Legend.Width = Calculation.CmToPt(4);
+            ExcelChart.Legend.Height = Calculation.CmToPt(12);
             ExcelChart.Legend.Font.Size = 12;
             ExcelChart.Legend.Font.FontStyle = "Bold";
 

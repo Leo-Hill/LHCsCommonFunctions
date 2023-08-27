@@ -29,13 +29,13 @@ namespace LHCommonFunctions {
             UInt32 actInputData;    //Current uint32 to process
             for (int iByteCnt = 0; iByteCnt < data.Length; iByteCnt += 4) {
                 actInputData = BitConverter.ToUInt32(data, iByteCnt);                          //Convert 4 bytes to 1 u32
-                actCrcValue = actCrcValue ^ actInputData;
+                actCrcValue ^= actInputData;
                 actBinaryIndex = 0;
                 while (actBinaryIndex < 32) {
                     if ((actCrcValue & (1 << 31)) != 0) {
                         actCrcValue = (actCrcValue << 1) ^ crcPoly;
                     } else {
-                        actCrcValue = actCrcValue << 1;
+                        actCrcValue <<= 1;
                     }
                     actBinaryIndex++;
                 }
@@ -63,7 +63,7 @@ namespace LHCommonFunctions {
         /// <param name="cm">The cm to convert</param>
         /// <param name="inch_per_point">Inch per points to use for the calculation</param>
         /// <returns></returns>
-        public static double dCmToPt(double cm, int inch_per_point = 72) {
+        public static double CmToPt(double cm, int inch_per_point = 72) {
             double dResult;
             dResult = (cm / 2.54) * inch_per_point;
             return dResult;
