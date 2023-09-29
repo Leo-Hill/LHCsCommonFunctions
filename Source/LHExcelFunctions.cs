@@ -134,13 +134,19 @@ namespace LHCommonFunctions.Source
             dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);                               //Calculate the new Y-Max value
             ExcelAxisY.MaximumScale = dAxisYMax;                                                    //Set the new Y-Max value
             ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale - ExcelAxisY.MinimumScale) / 4;
-            if (dAxisYMax > 1)
+            if (dAxisYMax < 1)
             {
-                ExcelAxisY.TickLabels.NumberFormat = "0";
+                int iNumOfDecimals = -(int)Math.Floor(Math.Log10(dAxisYMax));
+                iNumOfDecimals = Math.Max(1, iNumOfDecimals);
+                ExcelAxisY.TickLabels.NumberFormat = "0,";
+                for (; iNumOfDecimals > 0; iNumOfDecimals--)
+                {
+                    ExcelAxisY.TickLabels.NumberFormat += "0";
+                }
             }
             else
             {
-                ExcelAxisY.TickLabels.NumberFormat = "##.##0,0";
+                ExcelAxisY.TickLabels.NumberFormat = "0";
             }
 
             //Grid
