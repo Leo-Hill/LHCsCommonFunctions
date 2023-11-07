@@ -9,7 +9,7 @@ namespace LHCommonFunctions.Source
 {
     /***********************************************************************************************
     * 
-    * This class provides fu´nctions to create and write to a logfile
+    * This class provides functions to create and write to a logfile
     * 
     **********************************************************************************************/
     public class Class_LogFile
@@ -22,9 +22,8 @@ namespace LHCommonFunctions.Source
         **********************************************************************************************/
 
         //Primitive
-        private List<String> LsBufferedLogMessages;                                                         //List for storing log messages and writing them out later
-        private String sFileName;                                                                           //Name of the file
-
+        private List<String> _bufferedLogMessages;                                                         //List for storing log messages and writing them out later
+        public String FileName { get; private set; }                                                                           //Name of the file
 
         //Objects
         private StreamWriter streamWriter;                                                                  //Stream for writing to the file
@@ -36,17 +35,22 @@ namespace LHCommonFunctions.Source
         * 
         **********************************************************************************************/
 
-        public Class_LogFile(String qsLogName, String qsFolderPath)
+        /// <summary>
+        /// Constructor creates the file and necessary folders.
+        /// </summary>
+        /// <param name="fileName">Name of the file. .txt will be added</param>
+        /// <param name="path"></param>
+        public Class_LogFile(String fileName, String path)
         {
             //Initialize variables
             //Primitive
-            LsBufferedLogMessages = new List<String>();
-            sFileName = qsFolderPath + "/" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + qsLogName + ".txt";    //Build the filename
+            _bufferedLogMessages = new List<String>();
+            FileName = path + "/" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + fileName + ".txt";    //Build the filename
 
             //Check if the target directory exists
-            if (false == Directory.Exists(qsFolderPath))
+            if (false == Directory.Exists(path))
             {
-                Directory.CreateDirectory(qsFolderPath);
+                Directory.CreateDirectory(path);
             }
 
         }
@@ -57,43 +61,49 @@ namespace LHCommonFunctions.Source
         * 
         **********************************************************************************************/
 
-        public String sGetFileName()
+        /// <summary>
+        /// This function writes the message to the log file
+        /// </summary>
+        /// <param name="message">The message</param>
+        /// <param name="traceToDebugWindow">Specify if you want to show the message in the debug window (true by default)</param>
+        public void Log(String message, bool traceToDebugWindow = true)
         {
-            return sFileName;
-        }
-
-        //This function writes the qsMessage to the log file
-        public void vLog(String qsMessage, bool qbTraceToDebugWindow = true)
-        {
-            streamWriter = new StreamWriter(sFileName, true);
-            streamWriter.WriteLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + qsMessage);
-            if (qbTraceToDebugWindow)
+            streamWriter = new StreamWriter(FileName, true);
+            streamWriter.WriteLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);
+            if (traceToDebugWindow)
             {
-                LHTraceFunctions.vTraceLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + qsMessage);    //Trace to the output window
+                LHTraceFunctions.vTraceLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);    //Trace to the output window
             }
             streamWriter.Close();
         }
 
-        //This function stores the qsMessage to the LsBufferedLogMessages
-        public void vLogToBuffer(String qsMessage, bool qbTraceToDebugWindow = true)
+        /// <summary>
+        /// This function can be used to cache messages in an internal buffer and write them out later.
+        /// This might be useful if you want to log many messages in a short time and prevent opening/closing the file for every message.
+        /// </summary>
+        /// <param name="message">The message</param>
+        /// <param name="traceToDebugWindow">Specify if you want to show the message in the debug window (true by default)</param>
+        public void LogToBuffer(String message, bool traceToDebugWindow = true)
         {
-            LsBufferedLogMessages.Add(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + qsMessage);
-            if (qbTraceToDebugWindow)
+            _bufferedLogMessages.Add(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);
+            if (traceToDebugWindow)
             {
-                LHTraceFunctions.vTraceLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + qsMessage);    //Trace to the output window
+                LHTraceFunctions.vTraceLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);    //Trace to the output window
             }
         }
 
-        //This function writes out all buffered messages from the LsBufferedLogMessages and clears the list
-        public void vWriteOutBuffer()
+        /// <summary>
+        /// This function writes out all buffered messages cached with LogToBuffer.
+        /// </summary>
+        public void WriteOutBuffer()
         {
-            streamWriter = new StreamWriter(sFileName, true);
-            foreach (String sMessage in LsBufferedLogMessages)
+            streamWriter = new StreamWriter(FileName, true);
+            foreach (String sMessage in _bufferedLogMessages)
             {
                 streamWriter.WriteLine(sMessage);
             }
             streamWriter.Close();
-            LsBufferedLogMessages.Clear();
+            _bufferedLogMessages.Clear();
         }
 
     }
