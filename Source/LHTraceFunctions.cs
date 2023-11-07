@@ -17,13 +17,12 @@ namespace LHCommonFunctions.Source
         //This function traces the qsText to the output window. if qbTimeStamp == true, it adds a TimeStamp in front of the text
         public static void vTraceLine(String qsText, bool qbTimeStamp = true)
         {
-            if(true==qbTimeStamp)
+            if (true == qbTimeStamp)
             {
                 Trace.Write(DateTime.Now.ToString("HH:mm:ss:fff"));
                 Trace.Write("\t");
             }
             Trace.WriteLine(qsText);
         }
-
     }
 }

@@ -26,12 +26,4 @@
     </COMReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Daten\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Daten\Code\CSharp\WPF\Ressourcen\Bibliotheken\LHCommonFunctions\.editorconfig" />
-  </ItemGroup>
-
 </Project>

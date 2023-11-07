@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -181,7 +182,7 @@ namespace LHCommonFunctions.Source
                 new Typeface(qTextBlock.FontFamily, qTextBlock.FontStyle, qTextBlock.FontWeight, qTextBlock.FontStretch),
                 qTextBlock.FontSize,
                 Brushes.Black,
-                new NumberSubstitution(), TextFormattingMode.Display);
+                VisualTreeHelper.GetDpi(qTextBlock).PixelsPerDip);
             return new System.Windows.Size(formattedText.Width, formattedText.Height);
         }
 

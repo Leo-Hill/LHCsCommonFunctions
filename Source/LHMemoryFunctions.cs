@@ -18,6 +18,12 @@ namespace LHCommonFunctions.Source
         {
             if (BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
             {
+                if (qType == typeof(UInt16))
+                {
+                    UInt16 u16 = (ushort)(qaSourceArray[0] << 8);
+                    u16 += qaSourceArray[1];
+                    return u16;
+                }
                 if (qType == typeof(UInt32))
                 {
                     UInt32 u32 = 0;

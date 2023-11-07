@@ -22,12 +22,12 @@ namespace LHCommonFunctions.Source
             {
                 if (qTcpClient != null && qTcpClient.Client != null && qTcpClient.Client.Connected)
                 {
-                     /* When passing SelectMode.SelectRead as a parameter to the Poll method it will return 
-                     * -either- true if Socket.Listen(Int32) has been called and a connection is pending;
-                     * -or- true if data is available for reading; 
-                     * -or- true if the connection has been closed, reset, or terminated; 
-                     * otherwise, returns false
-                     */
+                    /* When passing SelectMode.SelectRead as a parameter to the Poll method it will return 
+                    * -either- true if Socket.Listen(Int32) has been called and a connection is pending;
+                    * -or- true if data is available for reading; 
+                    * -or- true if the connection has been closed, reset, or terminated; 
+                    * otherwise, returns false
+                    */
 
                     // Detect if client disconnected
                     if (qTcpClient.Client.Poll(0, SelectMode.SelectRead))

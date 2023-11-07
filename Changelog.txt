@@ -1,0 +1,3 @@
+﻿1.1
+- Adding a function for retrieving the binding name of an element in the XML
+- Rework IntelHex class. Added detection of gaps in hex files.

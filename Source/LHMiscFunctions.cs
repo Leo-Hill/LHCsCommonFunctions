@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace LHCommonFunctions.Source
 {
@@ -72,11 +73,25 @@ namespace LHCommonFunctions.Source
             return Application.Current.Windows.OfType<Window>().SingleOrDefault(window => window.IsActive);
         }
 
-        //This funcionreturns the name of a control, which invokded am command 
+        //This function returns the name of a control, which invoked am command 
         public static String SGetNameOfRoutedEventArgsSource(RoutedEventArgs e)
         {
             FrameworkElement frameworkElement = e.Source as FrameworkElement;
             return frameworkElement.Name;
+        }
+
+        /// <summary>
+        /// This function gives you the name of the resource key bound to a property.
+        /// </summary>
+        /// <param name="dependencyObject"></param>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static String GetDynamicResourceKey(DependencyObject dependencyObject, DependencyProperty property)
+        {
+            object value = dependencyObject.ReadLocalValue(property);
+            ResourceReferenceExpressionConverter converter = new ResourceReferenceExpressionConverter();
+            DynamicResourceExtension dynamicResource = converter.ConvertTo(value, typeof(MarkupExtension)) as DynamicResourceExtension;
+            return dynamicResource?.ResourceKey as String;
         }
 
         //This function inverts a ListSortDirection
