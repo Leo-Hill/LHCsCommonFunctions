@@ -57,12 +57,14 @@ namespace LHCommonFunctions.Source
         * Constructor
         * 
         **********************************************************************************************/
-        public Class_IntelHex(String qsFileName)
+
+        /// <summary>
+        /// Constructor parses the content of the hex file
+        /// </summary>
+        /// <param name="content">The content of the hex file</param>
+        public Class_IntelHex(String content)
         {
-            StreamReader reader = new StreamReader(qsFileName);
-            String sHexFileContent = reader.ReadToEnd();
-            reader.Close();
-            ParseData(sHexFileContent);
+            ParseData(content);
         }
 
 
@@ -71,6 +73,80 @@ namespace LHCommonFunctions.Source
         * Functions
         * 
         **********************************************************************************************/
+
+
+        /// <summary>
+        /// This function returns all data blocks of the hex file
+        /// </summary>
+        /// <returns>The data blocks containing the parsed hex file data</returns>
+        public List<DataBlock> GetDataBlocks()
+        {
+            return _dataBlockList;
+        }
+
+        /// <summary>
+        /// This gives you all bytes from the startAddress to the endAddress
+        /// Note: This function will simply return the bytes in the hex file.
+        ///       There might be gaps which are skipped by this function.
+        /// </summary>
+        /// <param name="startAddress">Address of the first byte to request</param>
+        /// <param name="endAddress">Address of the last byte to request</param>
+        /// <returns></returns>
+        public byte[] GetBytes(UInt32 startAddress, UInt32 endAddress)
+        {
+            List<byte> aBytesToReturn = new List<byte>();
+
+            foreach (DataBlock Block in _dataBlockList)
+            {
+                if (Block.StartAddress > endAddress)
+                {
+                    continue;
+                }
+                if (Block.StartAddress + Block.DataBytes.Length > endAddress)
+                {
+                    //We only want to copy data up until the end address
+                    byte[] bytesInRange = new byte[endAddress - Block.StartAddress + 1];
+                    Array.Copy(Block.DataBytes, bytesInRange, bytesInRange.Length);
+                    aBytesToReturn.AddRange(bytesInRange);
+                }
+                else
+                {
+                    aBytesToReturn.AddRange(Block.DataBytes);
+                }
+            }
+            return aBytesToReturn.ToArray();
+        }
+
+        /// <summary>
+        /// This gives you the size of all data in the hex file
+        /// </summary>
+        /// <returns>The overall number of bytes contained in the hex file</returns>
+        public int GetPayloadSize()
+        {
+            int payloadSize = 0;
+            foreach (DataBlock block in _dataBlockList)
+            {
+                payloadSize += block.DataBytes.Length;
+            }
+            return payloadSize;
+        }
+
+        /// <summary>
+        /// This function is used for inserting a new data block to the data block list
+        /// </summary>
+        /// <param name="content">Content to add</param>
+        /// <param name="startAddress">Start address of the block</param>
+        private void InsertNewBlock(List<byte> content, UInt32 startAddress)
+        {
+            if (content.Count == 0)
+            {
+                return;
+            }
+            DataBlock block = new DataBlock();
+            block.StartAddress = startAddress;
+            block.DataBytes = content.ToArray();
+            _dataBlockList.Add(block);
+        }
 
         /// <summary>
         /// This function parses the IHex data and stores the data blocks in the data block list
@@ -156,6 +232,13 @@ namespace LHCommonFunctions.Source
             }
         }
 
+
+        /// <summary>
+        /// This function parses a single line and returns information about it.
+        /// </summary>
+        /// <param name="line">The line to parse</param>
+        /// <returns>Information parsed from the line</returns>
+        /// <exception cref="Exception"></exception>
         private LineInformation ParseLineInformation(String line)
         {
             LineInformation lineInformation = new LineInformation();
@@ -178,59 +261,5 @@ namespace LHCommonFunctions.Source
 
         }
 
-        private void InsertNewBlock(List<byte> content, UInt32 startAddress)
-        {
-            if (content.Count == 0)
-            {
-                return;
-            }
-            DataBlock block = new DataBlock();
-            block.StartAddress = startAddress;
-            block.DataBytes = content.ToArray();
-            _dataBlockList.Add(block);
-        }
-
-        //This function returns the data blocks of the hex file
-        public List<DataBlock> GetDataBlocks()
-        {
-            return _dataBlockList;
-        }
-
-        //This gives you all bytes from the u32StartAddress to the u32EndAddress
-        public byte[] GetBytes(UInt32 u32StartAddress, UInt32 u32EndAddress)
-        {
-            List<byte> aBytesToReturn = new List<byte>();
-
-            foreach (DataBlock Block in _dataBlockList)
-            {
-                if (Block.StartAddress > u32EndAddress)
-                {
-                    continue;
-                }
-                if (Block.StartAddress + Block.DataBytes.Length > u32EndAddress)
-                {
-                    //We only want to copy data up until the end address
-                    byte[] aBytesInRange = new byte[u32EndAddress - Block.StartAddress];
-                    Array.Copy(Block.DataBytes, aBytesInRange, aBytesInRange.Length);
-                    aBytesToReturn.AddRange(aBytesInRange);
-                }
-                else
-                {
-                    aBytesToReturn.AddRange(Block.DataBytes);
-                }
-            }
-            return aBytesToReturn.ToArray();
-        }
-
-        //This gives you the size of the payload
-        public int iGetPayloadSize()
-        {
-            int payloadSize = 0;
-            foreach (DataBlock block in _dataBlockList)
-            {
-                payloadSize += block.DataBytes.Length;
-            }
-            return payloadSize;
-        }
     }
 }
