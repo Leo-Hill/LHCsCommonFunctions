@@ -25,7 +25,7 @@ namespace LHCommonFunctions.Source
         /// <param name="filePath">The file path of the file to save</param>
         public static void CreateXmlSettingsFile(String filePath)
         {
-            XDocument xmlFile = new XDocument();                                                   //Document to export
+            XDocument xmlFile = new XDocument();                                                    //Document to export
             XElement rootElement = new XElement(DICT_XML_ROOT_ELEMENT_NAME);
             xmlFile.Add(rootElement);
 
@@ -35,7 +35,7 @@ namespace LHCommonFunctions.Source
                 Directory.CreateDirectory(parentFolder);
             }
 
-            xmlFile.Save(filePath);                                              //Save the file 
+            xmlFile.Save(filePath);                                                                 //Save the file 
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace LHCommonFunctions.Source
         /// <param name="filePath">The file path of the file to save</param>
         public static void ExportDictionaryToXml(SortedDictionary<String, String> exportDictionary, String filePath)
         {
-            XDocument exportFile = new XDocument();                                                   //Document to export
+            XDocument exportFile = new XDocument();                                                 //Document to export
             XElement rootElement = new XElement(DICT_XML_ROOT_ELEMENT_NAME);
             foreach (String sKey in exportDictionary.Keys)
             {
@@ -61,7 +61,7 @@ namespace LHCommonFunctions.Source
                 Directory.CreateDirectory(parentFolder);
             }
 
-            exportFile.Save(filePath);                                              //Save the file 
+            exportFile.Save(filePath);                                                              //Save the file 
         }
 
         /// <summary>
@@ -71,15 +71,15 @@ namespace LHCommonFunctions.Source
         /// <returns></returns>
         public static SortedDictionary<String, String> ImportXmlToDictionary(String filePath)
         {
-            XDocument XDImport = XDocument.Load(filePath);                        //Load the xml file
-            SortedDictionary<String, String> SDReturn = new SortedDictionary<String, String>();
-            foreach (XElement actElement in XDImport.Descendants(DICT_XML_ITEM_ELEMENT_NAME))                           //Loop through xml childs 
+            XDocument importfile = XDocument.Load(filePath);                                        //Load the xml file
+            SortedDictionary<String, String> returnDict = new SortedDictionary<String, String>();
+            foreach (XElement actElement in importfile.Descendants(DICT_XML_ITEM_ELEMENT_NAME))     //Loop through xml childs 
             {
-                String sID = actElement.Attribute(DICT_XML_ID_TAG).Value;
-                String sValue = actElement.Value;
-                SDReturn.Add(sID, sValue);
+                String id = actElement.Attribute(DICT_XML_ID_TAG).Value;
+                String value = actElement.Value;
+                returnDict.Add(id, value);
             }
-            return SDReturn;
+            return returnDict;
         }
     }
 }

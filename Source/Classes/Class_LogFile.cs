@@ -22,12 +22,12 @@ namespace LHCommonFunctions.Source
         **********************************************************************************************/
 
         //Primitive
-        private List<String> _bufferedLogMessages;                                                         //List for storing log messages and writing them out later
-        private readonly String dateTimeFormat = "dd.MM.yyyy HH:mm:ss"; //Format used for writing/ptinting messages
-        public String FileName { get; private set; }                                                                           //Name of the file
+        private List<String> _bufferedLogMessages;                                                  //List for storing log messages and writing them out later
+        private readonly String dateTimeFormat = "dd.MM.yyyy HH:mm:ss";                             //Format used for writing/ptinting messages
+        public String FileName { get; private set; }                                                //Name of the file
 
         //Objects
-        private StreamWriter streamWriter;                                                                  //Stream for writing to the file
+        private StreamWriter streamWriter;                                                          //Stream for writing to the file
 
 
         /***********************************************************************************************

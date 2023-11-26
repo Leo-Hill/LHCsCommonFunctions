@@ -24,8 +24,8 @@ namespace LHCommonFunctions.Source
         /// <exception cref="Exception"></exception>
         public static UInt32 CalculateCrc(byte[] input_data)
         {
-            UInt32 actCrcValue = 0xFFFFFFFF;                                                     //Initial CRC value
-            UInt32 crcPoly = 0x4C11DB7;                                                          //Crc polynomial
+            UInt32 actCrcValue = 0xFFFFFFFF;                                                        //Initial CRC value
+            UInt32 crcPoly = 0x4C11DB7;                                                             //Crc polynomial
             UInt32 actInputData;
             for (int byteCnt = 0; byteCnt < input_data.Length; byteCnt++)
             {

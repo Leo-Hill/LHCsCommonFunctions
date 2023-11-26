@@ -30,13 +30,13 @@ namespace LHCommonFunctions.Source
         /// <exception cref="NotImplementedException"></exception>
         public static Object CopyFromBigEndianArray(byte[] sourceArray, int sourceArrayIndex, Type targetType)
         {
-            if (!BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
+            if (!BitConverter.IsLittleEndian)                                                       //Check if the running architecture is little endian.
             {
                 throw new NotImplementedException("Big endian architecture not supported!");
             }
             else
             {
-                int targetSize = Marshal.SizeOf(targetType); //Size of the target byte in size
+                int targetSize = Marshal.SizeOf(targetType);                                        //Size of the target byte in size
                 byte[] sourceBytes = new byte[targetSize];
                 Array.Copy(sourceArray, sourceArrayIndex, sourceBytes, 0, targetSize);
                 Array.Reverse(sourceBytes);
@@ -138,13 +138,13 @@ namespace LHCommonFunctions.Source
         /// <exception cref="NotImplementedException"></exception>
         public static void CopyToArrayBigEndian(Object sourceObject, byte[] targetArray, int targetArrayIndex)
         {
-            if (!BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
+            if (!BitConverter.IsLittleEndian)                                                       //Check if the running architecture is little endian.
             {
                 throw new NotImplementedException("Big endian architecture not supported!");
             }
             else
             {
-                int sourceObjectSize = Marshal.SizeOf(sourceObject); //Size of the source object in
+                int sourceObjectSize = Marshal.SizeOf(sourceObject);                                //Size of the source object in
                 CopyToArrayLittleEndian(sourceObject, targetArray, targetArrayIndex);
                 Array.Reverse(targetArray, targetArrayIndex, sourceObjectSize);
             }

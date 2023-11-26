@@ -150,7 +150,7 @@ namespace LHCommonFunctions.Source
             {
                 return Binding.DoNothing;
             }
-            for (int i = 0; i < inputGestureCollection.Count; i++)                          //Search for the first key gesture
+            for (int i = 0; i < inputGestureCollection.Count; i++)                                  //Search for the first key gesture
             {
                 KeyGesture keyGesture = ((IList)inputGestureCollection)[i] as KeyGesture;
                 if (keyGesture != null)

@@ -13,7 +13,7 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public class Class_IntelHex
     {
-        private List<DataBlock> _dataBlockList;                                        //This list contains data blocks (<StartAddress, Data>). A data block contains consecutive data. Empty spaces / skip in address will lead to multiple entries
+        private List<DataBlock> _dataBlockList;                                                     //This list contains data blocks (<StartAddress, Data>). A data block contains consecutive data. Empty spaces / skip in address will lead to multiple entries
 
         /***********************************************************************************************
         * 
@@ -157,10 +157,10 @@ namespace LHCommonFunctions.Source
         {
             _dataBlockList = new List<DataBlock>();
             String[] contentLines = hexContent.Split("\n");
-            List<byte> consecutiveBytes = new List<byte>(); //List for accumulating consecutive bytes
+            List<byte> consecutiveBytes = new List<byte>();                                         //List for accumulating consecutive bytes
 
-            UInt32 currentAddressOffset = 0; //Address offset specified by the previous Extended Linear Address Record
-            UInt32 startAddressOfCurrentBlock = 0; //Address of the currently editing data block 
+            UInt32 currentAddressOffset = 0;                                                        //Address offset specified by the previous Extended Linear Address Record
+            UInt32 startAddressOfCurrentBlock = 0;                                                  //Address of the currently editing data block 
 
             LineInformation currentLineInformation = new LineInformation();
             for (int lineCnt = 0; lineCnt < contentLines.Length; lineCnt++)
@@ -248,9 +248,9 @@ namespace LHCommonFunctions.Source
                 throw new Exception();
             }
 
-            lineInformation.numOfBytes = Convert.ToByte(line.Substring(1, 2), 16);                         //Parse the number of bytes
-            lineInformation.address = Convert.ToUInt32(line.Substring(3, 4), 16);                       //Parse the address
-            lineInformation.recordType = (RecordType)Convert.ToByte(line.Substring(7, 2), 16);                         //Parse the type
+            lineInformation.numOfBytes = Convert.ToByte(line.Substring(1, 2), 16);                  //Parse the number of bytes
+            lineInformation.address = Convert.ToUInt32(line.Substring(3, 4), 16);                   //Parse the address
+            lineInformation.recordType = (RecordType)Convert.ToByte(line.Substring(7, 2), 16);      //Parse the type
 
             lineInformation.data = new byte[lineInformation.numOfBytes];
             for (byte dataCnt = 0; dataCnt < lineInformation.numOfBytes; dataCnt++)

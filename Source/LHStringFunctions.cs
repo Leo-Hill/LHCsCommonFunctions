@@ -220,7 +220,7 @@ namespace LHCommonFunctions.Source
         {
             if (collection.Count == 0)
             {
-                collection.Add(insertString);                                                                 //Add the string if the osc is empty
+                collection.Add(insertString);                                                       //Add the string if the osc is empty
                 return;
             }
             int iIndex = 0;                                                                         //The index to iterate trough the oc
