@@ -13,34 +13,54 @@ namespace LHCommonFunctions.Source
         readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;
 
-        public Class_RelayCommand(Action<object> qAExecute, Predicate<object> qPCanExecute)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="execute">The function which should be executed if the command was triggered</param>
+        /// <param name="canExecute">Predicate determining if the command can be executed</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public Class_RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            if (qAExecute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = qAExecute;
-            _canExecute = qPCanExecute;
+            if (execute == null)
+            {
+                throw new ArgumentNullException("Execution function can not be null");
+            }
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
-        public Class_RelayCommand(Action<object> qAExecute) : this(qAExecute, null)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="execute">The function which should be executed if the command was triggered</param>
+        public Class_RelayCommand(Action<object> execute) : this(execute, null)
         {
 
         }
 
+        /// <summary>
+        /// See interface for documentation
+        /// </summary>
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public bool CanExecute(object qObject)
+        /// <summary>
+        /// See interface for documentation
+        /// </summary>
+        public bool CanExecute(object param)
         {
-            return _canExecute == null ? true : _canExecute(qObject);
+            return _canExecute == null ? true : _canExecute(param);
         }
 
-        public void Execute(object qObject)
+        /// <summary>
+        /// See interface for documentation
+        /// </summary>
+        public void Execute(object param)
         {
-            _execute(qObject);
+            _execute(param);
         }
     }
 }

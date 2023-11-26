@@ -2,7 +2,7 @@ using LHCommonFunctions.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 
-namespace UnitTests
+namespace Classes
 {
     [TestClass]
     public class Test_IntelHex

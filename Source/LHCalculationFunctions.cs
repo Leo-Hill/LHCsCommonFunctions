@@ -13,57 +13,60 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHCalculationFunctions
     {
-        //This function calculates the CRC32 checksum of a byte array
-        public static UInt32 u32CalculateCrc(byte[] qaData)
+        /// <summary>
+        /// This function calculates the CRC32 checksum of a byte array according to following setup 
+        /// XorOut: 0x00000000
+        /// Input reflected: false
+        /// Output reflected false
+        /// </summary>
+        /// <param name="input_data">Data for calculating the CRC32</param>
+        /// <returns>The CRC32 checksum for the data</returns>
+        /// <exception cref="Exception"></exception>
+        public static UInt32 CalculateCrc(byte[] input_data)
         {
-            if (0 != (qaData.Length % 4))                                                           //Check if the array can be divided by 4 in order to seperate the bytes to U32s
+            UInt32 actCrcValue = 0xFFFFFFFF;                                                     //Initial CRC value
+            UInt32 crcPoly = 0x4C11DB7;                                                          //Crc polynomial
+            UInt32 actInputData;
+            for (int byteCnt = 0; byteCnt < input_data.Length; byteCnt++)
             {
-                throw new Exception("CRC32 exception. Array can non be converted!");
-            }
-            UInt32 u32ActCrcValue = 0xFFFFFFFF;                                                     //Initial CRC value
-            UInt32 u32CrcPoly = 0x4C11DB7;                                                          //Crc polynom
-            UInt32 u32ActBinaryIndex;                                                               //Current bit of the crc value processing
-            UInt32 u32ActInputData;
-            for (int iByteCnt = 0; iByteCnt < qaData.Length; iByteCnt += 4)
-            {
-                u32ActInputData = BitConverter.ToUInt32(qaData, iByteCnt);                          //Convert 4 bytes to 1 u32
-                u32ActCrcValue = u32ActCrcValue ^ u32ActInputData;
-                u32ActBinaryIndex = 0;
-                while (u32ActBinaryIndex < 32)
+                actInputData = (UInt32)(input_data[byteCnt] << 24);
+                actCrcValue = actCrcValue ^ actInputData;
+                for (int binary_index = 0; binary_index < 8; binary_index++)
                 {
-                    if ((u32ActCrcValue & (1 << 31)) != 0)
+                    if ((actCrcValue & 0x80000000) != 0)
                     {
-                        u32ActCrcValue = (u32ActCrcValue << 1) ^ u32CrcPoly;
+                        actCrcValue = (actCrcValue << 1) ^ crcPoly;
                     }
                     else
                     {
-                        u32ActCrcValue = u32ActCrcValue << 1;
+                        actCrcValue = actCrcValue << 1;
                     }
-                    u32ActBinaryIndex++;
                 }
             }
-            return u32ActCrcValue;
+            return actCrcValue;
         }
 
-        //This function checks, if the qDouble is an integer/has decimals
-        public static bool bDoubleHasDecimals(double qdDouble, double qdEpsilon = 0.0001)
+        /// <summary>
+        /// This function checks, if the double value is an integer/has decimals
+        /// </summary>
+        /// <param name="value">The value to check</param>
+        /// <param name="num_of_decimal_places_to_analyze">This defines the threshold of detecting decimals.</param>
+        /// <returns></returns>
+        public static bool DoubleHasDecimals(double value, int num_of_decimal_places_to_analyze = 4)
         {
-            if ((qdDouble % 1) < qdEpsilon)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            double epsilon = Math.Pow(10, -num_of_decimal_places_to_analyze);
+            return (!((value % 1) < epsilon));
         }
 
-        //This function calculates cm to points
-        public static double dCmToPt(double qdCm, int qiInchPerPoint = 72)
+        /// <summary>
+        /// This function calculates cm to points
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <param name="inchPerPoint"></param>
+        /// <returns></returns>
+        public static double CmToPt(double cm, int inchPerPoint = 72)
         {
-            double dResult;
-            dResult = (qdCm / 2.54) * qiInchPerPoint;
-            return dResult;
+            return (cm / 2.54) * inchPerPoint;
         }
 
     }

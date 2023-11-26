@@ -48,7 +48,7 @@ namespace LHCommonFunctions.Source
     }
 
     //This converter converts a boolean to a 'x' if it is true
-    public class IVCBooleanToString : IValueConverter
+    public class IVCBooleanToX : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -71,12 +71,12 @@ namespace LHCommonFunctions.Source
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             DateTime dateTime = (DateTime)value;                                                    //Input value is Datetime
-            return dateTime.ToShortDateString();
+            return dateTime.ToString("dd.MM.yyyy");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            throw new NotImplementedException();
         }
     }
 
@@ -113,7 +113,7 @@ namespace LHCommonFunctions.Source
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 
@@ -141,19 +141,21 @@ namespace LHCommonFunctions.Source
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             RoutedCommand routedCommand = value as RoutedCommand;
-            if (routedCommand != null)
+            if (routedCommand == null)
             {
-                InputGestureCollection inputGestureCollection = routedCommand.InputGestures;
-                if ((inputGestureCollection != null) && (inputGestureCollection.Count >= 1))
+                return Binding.DoNothing;
+            }
+            InputGestureCollection inputGestureCollection = routedCommand.InputGestures;
+            if (inputGestureCollection == null || inputGestureCollection.Count == 0)
+            {
+                return Binding.DoNothing;
+            }
+            for (int i = 0; i < inputGestureCollection.Count; i++)                          //Search for the first key gesture
+            {
+                KeyGesture keyGesture = ((IList)inputGestureCollection)[i] as KeyGesture;
+                if (keyGesture != null)
                 {
-                    for (int i = 0; i < inputGestureCollection.Count; i++)                          //Search for the first key gesture
-                    {
-                        KeyGesture keyGesture = ((IList)inputGestureCollection)[i] as KeyGesture;
-                        if (keyGesture != null)
-                        {
-                            return " (" + keyGesture.GetDisplayStringForCulture(CultureInfo.CurrentCulture) + ")";
-                        }
-                    }
+                    return "(" + keyGesture.GetDisplayStringForCulture(CultureInfo.CurrentCulture) + ")";
                 }
             }
             return Binding.DoNothing;
@@ -161,7 +163,7 @@ namespace LHCommonFunctions.Source
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            throw new NotImplementedException();
         }
     }
 
@@ -178,17 +180,14 @@ namespace LHCommonFunctions.Source
             {
                 if (o.GetType() != typeof(bool))
                 {
+                    continue;
+                }
+                else if (false == (bool)o)
+                {
                     return Visibility.Collapsed;
                 }
-                else
-                {
-                    if (false == (bool)o)
-                    {
-                        return Visibility.Visible;
-                    }
-                }
             }
-            return Visibility.Collapsed;
+            return Visibility.Visible;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)

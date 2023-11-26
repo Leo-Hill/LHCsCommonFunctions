@@ -23,6 +23,7 @@ namespace LHCommonFunctions.Source
 
         //Primitive
         private List<String> _bufferedLogMessages;                                                         //List for storing log messages and writing them out later
+        private readonly String dateTimeFormat = "dd.MM.yyyy HH:mm:ss"; //Format used for writing/ptinting messages
         public String FileName { get; private set; }                                                                           //Name of the file
 
         //Objects
@@ -38,14 +39,14 @@ namespace LHCommonFunctions.Source
         /// <summary>
         /// Constructor creates the file and necessary folders.
         /// </summary>
-        /// <param name="fileName">Name of the file. .txt will be added</param>
-        /// <param name="path"></param>
+        /// <param name="fileName">Name of the file. ".txt" will be added</param>
+        /// <param name="path">The folder where to save the file to</param>
         public Class_LogFile(String fileName, String path)
         {
             //Initialize variables
             //Primitive
             _bufferedLogMessages = new List<String>();
-            FileName = path + "/" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + fileName + ".txt";    //Build the filename
+            FileName = path + "\\" + DateTime.Now.ToString("yyyyMMdd_HHmmss_") + fileName + ".txt";    //Build the filename
 
             //Check if the target directory exists
             if (false == Directory.Exists(path))
@@ -69,10 +70,10 @@ namespace LHCommonFunctions.Source
         public void Log(String message, bool traceToDebugWindow = true)
         {
             streamWriter = new StreamWriter(FileName, true);
-            streamWriter.WriteLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);
+            streamWriter.WriteLine(DateTime.Now.ToString(dateTimeFormat) + "\t" + message);
             if (traceToDebugWindow)
             {
-                LHTraceFunctions.vTraceLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);    //Trace to the output window
+                LHTraceFunctions.vTraceLine(DateTime.Now.ToString(dateTimeFormat) + "\t" + message);    //Trace to the output window
             }
             streamWriter.Close();
         }
@@ -85,10 +86,10 @@ namespace LHCommonFunctions.Source
         /// <param name="traceToDebugWindow">Specify if you want to show the message in the debug window (true by default)</param>
         public void LogToBuffer(String message, bool traceToDebugWindow = true)
         {
-            _bufferedLogMessages.Add(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);
+            _bufferedLogMessages.Add(DateTime.Now.ToString(dateTimeFormat) + "\t" + message);
             if (traceToDebugWindow)
             {
-                LHTraceFunctions.vTraceLine(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\t" + message);    //Trace to the output window
+                LHTraceFunctions.vTraceLine(DateTime.Now.ToString(dateTimeFormat) + "\t" + message);    //Trace to the output window
             }
         }
 

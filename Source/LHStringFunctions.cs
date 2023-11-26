@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,88 +35,120 @@ namespace LHCommonFunctions.Source
         * Functions
         * 
         **********************************************************************************************/
-        //This function converts a byte array to a string. Any non ISO 8859-1 character will be converted to a hex number with format '\0x00'
-        public static String sConvertByteArrayToString(byte[] qaByteArray)
+        /// <summary>
+        /// This function converts a byte array to a string. Any non ISO 8859-1 character will be converted to a hex number with format '\0x00'
+        /// </summary>
+        /// <param name="byteArray">The array to convert</param>
+        /// <returns>The array converted to a string</returns>
+        public static String ConvertByteArrayToString(byte[] byteArray)
         {
-            String sReturnString = "";
-            foreach (byte actByte in qaByteArray)
+            String returnString = "";
+            foreach (byte actByte in byteArray)
             {
                 if (actByte < ' ' || (actByte >= 0x7F && actByte <= 0x9F))                          //escape non ISO 8859-1 chars
                 {
-                    sReturnString += "\\0x" + actByte.ToString("X2");
+                    returnString += "\\0x" + actByte.ToString("X2");
                 }
                 else
                 {
-                    sReturnString += (char)actByte;
+                    returnString += (char)actByte;
                 }
             }
-            return sReturnString;
+            return returnString;
         }
 
-        //This function converts a byte array to a string containing hex numbers. You can define a prefix for every hex number (e.g. "0x)
-        public static String sConvertByteArrayToHexString(byte[] qaByteArray, String prefix = "")
+        /// <summary>
+        /// This function gives you a string representing the content of the byteArray as hex numbers. 
+        /// You can define a prefix for every hex number (e.g. "0x)
+        /// The bytes will be separated by a space character.
+        /// </summary>
+        /// <param name="byteArray">The byte array converted to a string representing the hex numbers</param>
+        /// <param name="prefix">Prefix put in front of every hex number</param>
+        /// <returns>A string containing all bytes of the byteArray as hex numbers</returns>
+        public static String ConvertByteArrayToHexString(byte[] byteArray, String prefix = "")
         {
             String sReturnString = "";
-            foreach (byte actByte in qaByteArray)
+            foreach (byte actByte in byteArray)
             {
                 {
                     sReturnString += prefix + actByte.ToString("X2") + " ";
                 }
             }
-            return sReturnString;
+            return sReturnString.Substring(0, sReturnString.Length - 1);
         }
 
-        //This function returns the string representation of a uint32 IP
-        public static String sConvertIpAddressToString(UInt32 qu32Ip)
+        /// <summary>
+        /// This function returns the string representation of a uint32 IP
+        /// </summary>
+        /// <param name="ipAddress">IP address to convert (LSB first)</param>
+        /// <returns> the string representation of a uint32 IP</returns>
+        public static String ConvertIpAddressToString(UInt32 ipAddress)
         {
-            String sRetrunString = "";
-            byte[] aIpBytes = BitConverter.GetBytes(qu32Ip);
-            sRetrunString += aIpBytes[0].ToString();
-            sRetrunString += ".";
-            sRetrunString += aIpBytes[1].ToString();
-            sRetrunString += ".";
-            sRetrunString += aIpBytes[2].ToString();
-            sRetrunString += ".";
-            sRetrunString += aIpBytes[3].ToString();
-            return sRetrunString;
+            String retrunString = "";
+            byte[] ipBytes = BitConverter.GetBytes(ipAddress);
+            retrunString += ipBytes[0].ToString();
+            retrunString += ".";
+            retrunString += ipBytes[1].ToString();
+            retrunString += ".";
+            retrunString += ipBytes[2].ToString();
+            retrunString += ".";
+            retrunString += ipBytes[3].ToString();
+            return retrunString;
         }
 
-        //This function converts a String to its ISO 8859-1 number representation. Hex numbers can be escaped by '\' (format \0x00). The null terminator is not included in the array.
-        public static byte[] aConvertStringToByteArray(String qString)
+        /// <summary>
+        /// This function converts a String to its ISO 8859-1 number representation.
+        /// Hex numbers can be escaped by '\' (format \0x00). The null terminator is not included in the array.
+        /// </summary>
+        /// <param name="inputSting">The string to convert</param>
+        /// <param name="copyNullTerminator">Specify if the null terminator should be copied to the array</param>
+        /// <returns>A byte array containing the byte representation of the string</returns>
+        public static byte[] ConvertStringToByteArray(String inputSting, bool copyNullTerminator)
         {
-            List<byte> LNumbers = new List<byte>();
-            int iStringCnt = 0;
-            while (iStringCnt < qString.Length)
+            Regex hexNumberRegex = new Regex("\\\\0[xX][0-9a-fA-F]{2}");
+            MatchCollection hexNumberMatches = hexNumberRegex.Matches(inputSting);
+            List<int> hexMatchesIndexes = new List<int>();
+
+            List<byte> byteList = new List<byte>();
+
+            foreach (Match match in hexNumberMatches)
             {
-                if ((qString[iStringCnt] == '\\') && qString.Length > iStringCnt + 4)               //Check for escape character
+                hexMatchesIndexes.Add(match.Index);
+            }
+
+            int charCnt = 0;
+            while (charCnt < inputSting.Length)
+            {
+                if (hexMatchesIndexes.Contains(charCnt))
                 {
-                    if (qString[iStringCnt + 1] == '0' && qString[iStringCnt + 2] == 'x')           //Check for Hex number
-                    {
-                        LNumbers.Add((byte)int.Parse("" + qString[iStringCnt + 3] + qString[iStringCnt + 4], NumberStyles.HexNumber));
-                        iStringCnt += 5;
-                    }
-                    else                                                                            //Usual char
-                    {
-                        LNumbers.Add((byte)qString[iStringCnt]);
-                        iStringCnt++;
-                    }
+                    byteList.Add((byte)int.Parse("" + inputSting[charCnt + 3] + inputSting[charCnt + 4], NumberStyles.HexNumber));
+                    charCnt += 5;
                 }
-                else                                                                                //Usual char
+                else
                 {
-                    LNumbers.Add((byte)qString[iStringCnt]);
-                    iStringCnt++;
+                    byteList.Add((byte)inputSting[charCnt]);
+                    charCnt++;
                 }
             }
-            return LNumbers.ToArray();
+            if (copyNullTerminator)
+            {
+                byteList.Add(0x00);
+            }
+            return byteList.ToArray();
         }
 
-        //This function converts a IP-String to a uint32 IP 
-        public static UInt32 u32ConvertStringToIpAddress(String qsIP)
+        /// <summary>
+        /// This function converts a IP-String to a uint32 IP.
+        /// The uint32 will be in LSB first format.
+        /// </summary>
+        /// <param name="ipString">The IP address in string format</param>
+        /// <returns>The IP in uint32 format.</returns>
+        public static UInt32 ConvertStringToIpAddress(String ipString)
         {
             try
             {
                 UInt32 u32ReturnIP = 0;
-                String[] aSplitStrings = qsIP.Split('.');
+                String[] aSplitStrings = ipString.Split('.');
 
                 u32ReturnIP += (UInt32)(byte.Parse(aSplitStrings[3]));
                 u32ReturnIP = u32ReturnIP << 8;
@@ -133,31 +166,66 @@ namespace LHCommonFunctions.Source
             }
         }
 
-        //This function returns the extention of a file
-        public static String sGetFileExtention(String qsFilePath)
+        /// <summary>
+        /// This function returns the extension of a file
+        /// </summary>
+        /// <param name="filePath">The path of the file</param>
+        /// <returns>The extension of the file</returns>
+        public static String GetFileExtension(String filePath)
         {
-            String[] aSplitStrings = qsFilePath.Split('.');
-            return aSplitStrings[aSplitStrings.Count() - 1];
+            String[] splitStrings = filePath.Split('.');
+            return splitStrings[splitStrings.Count() - 1];
         }
 
-        //This function returns the filename of a file
-        public static String sGetFileName(String qsFilePath)
+        /// <summary>
+        /// This function returns the filename of a file.
+        /// </summary>
+        /// <param name="filePath">The path of the file</param>
+        /// <returns>The name of the file</returns>
+        public static String GetFileName(String filePath)
         {
-            String[] aSplitStrings = qsFilePath.Split('\\');
-            return aSplitStrings[aSplitStrings.Count() - 1];
+            String[] splitStrings = filePath.Split('\\');
+            return splitStrings[splitStrings.Count() - 1];
         }
 
-        //This function inserts a string in an observablecollection sorted. qLSD determines how the observablecollection is sorted
-        public static void vInsertStringInObservableCollection(ObservableCollection<String> qsOC, String qsString, ListSortDirection qLSD)
+        /// <summary>
+        /// This gives you the parent folder of the specified file/folder path
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static String GetParentFolder(String filePath)
         {
-            if (qsOC.Count == 0)
+            String[] splitStrings = filePath.Split('\\');
+            String parent = "";
+
+            for (int folderCnt = 0; folderCnt < splitStrings.Length - 1; folderCnt++)
             {
-                qsOC.Add(qsString);                                                                 //Add the string if the osc is empty
+                parent += splitStrings[folderCnt];
+
+                if (folderCnt < splitStrings.Length - 2)
+                {
+                    parent += "\\";
+                }
+            }
+            return parent;
+        }
+
+        /// <summary>
+        /// This function inserts a string into a sorted ObservableCollection sorted.
+        /// </summary>
+        /// <param name="collection">The collection to insert the string to</param>
+        /// <param name="insertString">The string to insert</param>
+        /// <param name="sortDirection">The sorting direction of the collection</param>
+        public static void InsertStringInSortedObservableCollection(ObservableCollection<String> collection, String insertString, ListSortDirection sortDirection)
+        {
+            if (collection.Count == 0)
+            {
+                collection.Add(insertString);                                                                 //Add the string if the osc is empty
                 return;
             }
             int iIndex = 0;                                                                         //The index to iterate trough the oc
             int iCompareValue;                                                                      //The value to compare the String.CompareTo result
-            if (qLSD == ListSortDirection.Ascending)
+            if (sortDirection == ListSortDirection.Ascending)
             {
                 iCompareValue = -1;
             }
@@ -165,15 +233,15 @@ namespace LHCommonFunctions.Source
             {
                 iCompareValue = 1;
             }
-            while ((iIndex < qsOC.Count) && (iCompareValue != qsString.CompareTo(qsOC[iIndex])))
+            while ((iIndex < collection.Count) && (iCompareValue != insertString.CompareTo(collection[iIndex])))
             {
                 iIndex++;
             }
-            qsOC.Insert(iIndex, qsString);
+            collection.Insert(iIndex, insertString);
         }
 
         //This function calculates the pixelsize of a textblock and returns the size
-        public static System.Windows.Size SZMeasureString(TextBlock qTextBlock)
+        public static System.Windows.Size MeasureString(TextBlock qTextBlock)
         {
             FormattedText formattedText = new FormattedText(
                 qTextBlock.Text,
@@ -186,43 +254,57 @@ namespace LHCommonFunctions.Source
             return new System.Windows.Size(formattedText.Width, formattedText.Height);
         }
 
-        //This function replaces invalid chars in a filename with the qcReplacement
-        public static String sReplaceInvalidCharactersInFileName(String qsFileName)
+        /// <summary>
+        /// This function removes invalid chars in a file name
+        /// </summary>
+        /// <param name="fileName">The name to analyze</param>
+        /// <returns>The fileName with valid chars only</returns>
+        public static String RemoveInvalidCharactersInFileName(String fileName)
         {
             char[] acInvalidChars = Path.GetInvalidFileNameChars();                                 //Get invalid filename chars
 
             foreach (char c in acInvalidChars)
             {
-                if (qsFileName.Contains(c))
+                if (fileName.Contains(c))
                 {
-                    qsFileName = qsFileName.Remove(c);
+                    fileName = fileName.Replace(c.ToString(), "");
                 }
             }
-            return qsFileName;
+            return fileName;
         }
 
-        //This function converts a timespan to a string "HH:mm:SS". HH is in total hours -> can be > 23
-        public static String sTimeSpanToString(TimeSpan qTimeSpan)
+        /// <summary>
+        /// This function converts a timespan to a string "HH:mm:ss".
+        /// Note: HH are absolute hours, so it can be > 23
+        /// </summary>
+        /// <param name="timeSpan">The timespan to convert</param>
+        /// <returns>The timeSpan converted to string</returns>
+        public static String TimeSpanToString(TimeSpan timeSpan)
         {
             String sReturnString;
-            sReturnString = (qTimeSpan.Days * 24 + qTimeSpan.Hours).ToString("00");
+            sReturnString = (timeSpan.Days * 24 + timeSpan.Hours).ToString("00");
             sReturnString += ":";
-            sReturnString += qTimeSpan.Minutes.ToString("00");
+            sReturnString += timeSpan.Minutes.ToString("00");
             sReturnString += ":";
-            sReturnString += qTimeSpan.Seconds.ToString("00");
+            sReturnString += timeSpan.Seconds.ToString("00");
             return sReturnString;
         }
 
-        //This function converts a timespan to a string "HH'h' mm'm' SS's'". HH is in total hours -> can be > 23
-        public static String sTimeSpanToStringWithChars(TimeSpan qTimeSpan)
+        /// <summary>
+        /// This function converts a timespan to a string "HH'h' mm'm' SS's'". 
+        /// Note: HH are absolute hours, so it can be > 23
+        /// </summary>
+        /// <param name="timeSpan">The timespan to convert</param>
+        /// <returns>The timeSpan converted to string</returns>
+        public static String TimeSpanToStringWithChars(TimeSpan timeSpan)
         {
             String sReturnString;
-            sReturnString = (qTimeSpan.Days * 24 + qTimeSpan.Hours).ToString("00");
+            sReturnString = (timeSpan.Days * 24 + timeSpan.Hours).ToString("00");
             sReturnString += "h ";
-            sReturnString += qTimeSpan.Minutes.ToString("00");
+            sReturnString += timeSpan.Minutes.ToString("00");
             sReturnString += "m ";
-            sReturnString += qTimeSpan.Seconds.ToString("00");
-            sReturnString += "s ";
+            sReturnString += timeSpan.Seconds.ToString("00");
+            sReturnString += "s";
             return sReturnString;
         }
 

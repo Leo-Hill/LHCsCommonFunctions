@@ -1,7 +1,12 @@
+// Ignore Spelling: Endianess
+
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,136 +19,177 @@ namespace LHCommonFunctions.Source
     **********************************************************************************************/
     public static class LHMemoryFunctions
     {
-        public static Object oCopyFromArrayReversed(byte[] qaSourceArray, int iSorceArrayStartIndex, Type qType)
+        /// <summary>
+        /// This function copies an object from an array.
+        /// The byte order of the data in the source array is expected to be big endian.
+        /// </summary>
+        /// <param name="sourceArray">The array to copy from</param>
+        /// <param name="sourceArrayIndex">The index of the source array from where the data is copied from</param>
+        /// <param name="targetType">The datatype of the object you want to copy</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static Object CopyFromBigEndianArray(byte[] sourceArray, int sourceArrayIndex, Type targetType)
         {
-            if (BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
+            if (!BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
             {
-                if (qType == typeof(UInt16))
+                throw new NotImplementedException("Big endian architecture not supported!");
+            }
+            else
+            {
+                int targetSize = Marshal.SizeOf(targetType); //Size of the target byte in size
+                byte[] sourceBytes = new byte[targetSize];
+                Array.Copy(sourceArray, sourceArrayIndex, sourceBytes, 0, targetSize);
+                Array.Reverse(sourceBytes);
+
+                if (targetType == typeof(UInt16))
                 {
-                    UInt16 u16 = (ushort)(qaSourceArray[0] << 8);
-                    u16 += qaSourceArray[1];
-                    return u16;
+                    return BitConverter.ToUInt16(sourceBytes, 0);
                 }
-                if (qType == typeof(UInt32))
+                else if (targetType == typeof(Int16))
                 {
-                    UInt32 u32 = 0;
-                    for (int iByteCnt = 0; iByteCnt < 4; iByteCnt++)
-                    {
-                        u32 += qaSourceArray[iSorceArrayStartIndex + iByteCnt];
-                        if (iByteCnt < 3)
-                        {
-                            u32 = u32 << 8;
-                        }
-                    }
-                    return u32;
+                    return BitConverter.ToInt16(sourceBytes, 0);
                 }
-                else if (qType == typeof(UInt64))
+                else if (targetType == typeof(UInt32))
                 {
-                    UInt64 u64 = 0;
-                    for (int iByteCnt = 0; iByteCnt < 8; iByteCnt++)
-                    {
-                        u64 += qaSourceArray[iSorceArrayStartIndex + iByteCnt];
-                        if (iByteCnt < 7)
-                        {
-                            u64 = u64 << 8;
-                        }
-                    }
-                    return u64;
+                    return BitConverter.ToUInt32(sourceBytes, 0);
+                }
+                else if (targetType == typeof(Int32))
+                {
+                    return BitConverter.ToInt32(sourceBytes, 0);
+                }
+                else if (targetType == typeof(UInt64))
+                {
+                    return BitConverter.ToUInt64(sourceBytes, 0);
+                }
+                else if (targetType == typeof(Int64))
+                {
+                    return BitConverter.ToInt64(sourceBytes, 0);
                 }
                 else
                 {
                     throw new NotImplementedException("Unknown DataType");
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// This function copies a variable to a byte array.
+        /// The byte order of the data in the array is little endian
+        /// </summary>
+        /// <param name="sourceObject">The object to copy to the array</param>
+        /// <param name="targetArray">The array to copy the object to</param>
+        /// <param name="targetArrayIndex">The index of the target array to copy the object to</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void CopyToArrayLittleEndian(Object sourceObject, byte[] targetArray, int targetArrayIndex)
+        {
+            if (!BitConverter.IsLittleEndian)
             {
                 throw new NotImplementedException("Big endian architecture not supported!");
             }
-        }
-
-        //This function copies a variable to a byte array. The byte order of the data in the array is little endian if the running architecture is litte endian
-        public static void vCopyToArray(Object qObject, byte[] qaTargetArray, int qiTargetArrayStartIndex)
-        {
-            if (BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
+            else
             {
-                Type parameterType = qObject.GetType();
+                Type parameterType = sourceObject.GetType();
                 if (parameterType == typeof(UInt16))
                 {
-                    Array.Copy(BitConverter.GetBytes((UInt16)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 2);
+                    Array.Copy(BitConverter.GetBytes((UInt16)sourceObject), 0, targetArray, targetArrayIndex, 2);
+                }
+                else if (parameterType == typeof(Int16))
+                {
+                    Array.Copy(BitConverter.GetBytes((Int16)sourceObject), 0, targetArray, targetArrayIndex, 2);
                 }
                 else if (parameterType == typeof(UInt32))
                 {
-                    Array.Copy(BitConverter.GetBytes((UInt32)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 4);
+                    Array.Copy(BitConverter.GetBytes((UInt32)sourceObject), 0, targetArray, targetArrayIndex, 4);
+                }
+                else if (parameterType == typeof(Int32))
+                {
+                    Array.Copy(BitConverter.GetBytes((Int32)sourceObject), 0, targetArray, targetArrayIndex, 4);
                 }
                 else if (parameterType == typeof(float))
                 {
-                    Array.Copy(BitConverter.GetBytes((float)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 4);
+                    Array.Copy(BitConverter.GetBytes((float)sourceObject), 0, targetArray, targetArrayIndex, 4);
                 }
                 else if (parameterType == typeof(Int64))
                 {
-                    Array.Copy(BitConverter.GetBytes((Int64)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 8);
+                    Array.Copy(BitConverter.GetBytes((Int64)sourceObject), 0, targetArray, targetArrayIndex, 8);
                 }
                 else if (parameterType == typeof(UInt64))
                 {
-                    Array.Copy(BitConverter.GetBytes((UInt64)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 8);
+                    Array.Copy(BitConverter.GetBytes((UInt64)sourceObject), 0, targetArray, targetArrayIndex, 8);
                 }
                 else if (parameterType == typeof(double))
                 {
-                    Array.Copy(BitConverter.GetBytes((double)qObject), 0, qaTargetArray, qiTargetArrayStartIndex, 4);
-                }
-                else if (parameterType == typeof(String))
-                {
-                    String sString = ((String)qObject);
-                    Array.Copy(Encoding.GetEncoding(LHStringFunctions.I_CODEPAGE_ISO_8859_1).GetBytes(sString), 0, qaTargetArray, qiTargetArrayStartIndex, sString.Length);
+                    Array.Copy(BitConverter.GetBytes((double)sourceObject), 0, targetArray, targetArrayIndex, 4);
                 }
                 else
                 {
                     throw new NotImplementedException("Unknown DataType");
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// This function copies a variable to a byte array.
+        /// The byte order of the data in the array is big endian
+        /// </summary>
+        /// <param name="sourceObject"></param>
+        /// <param name="TargetArray"></param>
+        /// <param name="TargetArrayIndex"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void CopyToArrayBigEndian(Object sourceObject, byte[] targetArray, int targetArrayIndex)
+        {
+            if (!BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
             {
                 throw new NotImplementedException("Big endian architecture not supported!");
             }
-        }
-
-        //This function copies a variable to a byte array. The byte order of the data in the array is big endian if the running architecture is litte endian
-        public static void vCopyToArrayReversed(Object qObject, byte[] qaTargetArray, int qiTargetArrayStartIndex)
-        {
-            if (BitConverter.IsLittleEndian)                                                        //Check if the running architecture is little endian.
-            {
-                Type parameterType = qObject.GetType();
-                if (parameterType == typeof(UInt32))
-                {
-                    UInt32 u32 = (uint)qObject;
-                    byte[] au32 = new byte[4];
-                    au32[0] = ((byte)((u32 & 0xFF000000) >> 24));
-                    au32[1] = ((byte)((u32 & 0x00FF0000) >> 16));
-                    au32[2] = ((byte)((u32 & 0x0000FF00) >> 8));
-                    au32[3] = (byte)((u32 & 0x000000FF));
-
-                    Array.Copy(au32, 0, qaTargetArray, qiTargetArrayStartIndex, 4);
-                }
-                else
-                {
-                    throw new NotImplementedException("Unknown DataType");
-                }
-            }
             else
             {
-                throw new NotImplementedException("Big endian architecture not supported!");
+                int sourceObjectSize = Marshal.SizeOf(sourceObject); //Size of the source object in
+                CopyToArrayLittleEndian(sourceObject, targetArray, targetArrayIndex);
+                Array.Reverse(targetArray, targetArrayIndex, sourceObjectSize);
             }
         }
 
-        //This function reverses the endianess of the qObject
-        public static Object oReverseEdianess(Object qObject)
+        /// <summary>
+        /// This function copies a string to a byte array.
+        /// </summary>
+        /// <param name="sourceString">The string to copy</param>
+        /// <param name="targetArray">The array to copy the string to</param>
+        /// <param name="targetArrayIndex">The index of the array where to copy the string to</param>
+        /// <param name="copyNullTerminator">Specify if you want to copy a null terminator at the end of the string</param>
+        /// <exception cref="Exception"></exception>
+        public static void CopyStringToArray(String sourceString, byte[] targetArray, int targetArrayIndex, bool copyNullTerminator)
         {
-            if (qObject.GetType() == typeof(UInt32))
+            int minArrayLength = targetArrayIndex + sourceString.Length;
+            if (copyNullTerminator)
             {
-                UInt32 u32 = (UInt32)qObject;
-                byte[] aData = new byte[4];
-                vCopyToArray(u32, aData, 0);
-                u32 = (UInt32)oCopyFromArrayReversed(aData, 0, typeof(UInt32));
+                minArrayLength += 1;
+            }
+            if (targetArray.Length < minArrayLength)
+            {
+                throw new Exception("Target array not big enough!");
+            }
+            Array.Copy(Encoding.GetEncoding(LHStringFunctions.I_CODEPAGE_ISO_8859_1).GetBytes(sourceString), 0, targetArray, targetArrayIndex, sourceString.Length);
+            if (copyNullTerminator)
+            {
+                targetArray[targetArrayIndex + sourceString.Length ] = 0;
+            }
+        }
+
+        /// <summary>
+        /// This function reverses the endianess of the passed object
+        /// </summary>
+        /// <param name="sourceObject">The object to reverse the endianess</param>
+        /// <returns>The object in reversed endianess</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static Object ReverseEndianess(Object sourceObject)
+        {
+            if (sourceObject.GetType() == typeof(UInt32))
+            {
+                UInt32 u32 = (UInt32)sourceObject;
+                byte[] data = new byte[4];
+                CopyToArrayLittleEndian(u32, data, 0);
+                u32 = (UInt32)CopyFromBigEndianArray(data, 0, typeof(UInt32));
                 return u32;
             }
             else

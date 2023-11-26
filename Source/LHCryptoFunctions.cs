@@ -7,61 +7,74 @@ namespace LHCommonFunctions.Source
 {
     public static class LHCryptoFunctions
     {
-        //This function encrypts a file using a password and a salt
-        public static void vAesEncrypt(String qsInputFile, String qsOutputFile, String qsPassword, String qsSalt, int qiNumOfIterations)
+        /// <summary>
+        /// This function encrypts a file using AES encryption.
+        /// </summary>
+        /// <param name="inputFile">Path to the file to encrypt</param>
+        /// <param name="outputFile">The encrypted output file</param>
+        /// <param name="password">The password for derivation of a key for AES encryption</param>
+        /// <param name="salt">The salt for derivation of a key for AES encryption</param>
+        /// <param name="numOfIterations">The num of iterations for derivation of a key for AES encryption</param>
+        public static void AesEncrypt(String inputFile, String outputFile, String password, String salt, int numOfIterations)
         {
 
             Aes aes = Aes.Create("AesManaged");
             aes.KeySize = 256;
             aes.BlockSize = 128;
 
-            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(qsPassword, ASCIIEncoding.ASCII.GetBytes(qsSalt), qiNumOfIterations);
+            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, ASCIIEncoding.ASCII.GetBytes(salt), numOfIterations);
             aes.Key = key.GetBytes(aes.KeySize / 8);
             aes.IV = key.GetBytes(aes.BlockSize / 8);
             aes.Mode = CipherMode.CBC;
 
-            FileStream FsOutput = new FileStream(qsOutputFile, FileMode.Create);
-            CryptoStream CsOutput = new CryptoStream(FsOutput, aes.CreateEncryptor(), CryptoStreamMode.Write);
-
-            FileStream FsInput = new FileStream(qsInputFile, FileMode.Open);
+            FileStream inputStream = new FileStream(inputFile, FileMode.Open);
+            FileStream outputStream = new FileStream(outputFile, FileMode.Create);
+            CryptoStream cryptoStream = new CryptoStream(outputStream, aes.CreateEncryptor(), CryptoStreamMode.Write);
 
             int data;
-            while ((data = FsInput.ReadByte()) != -1)
+            while ((data = inputStream.ReadByte()) != -1)
             {
-                CsOutput.WriteByte((byte)data);
+                cryptoStream.WriteByte((byte)data);
             }
 
-            FsInput.Close();
-            CsOutput.Close();
-            FsOutput.Close();
+            inputStream.Close();
+            cryptoStream.Close();
+            outputStream.Close();
 
         }
 
-        //This function decrypts a file using a password and a salt
-        public static void vAesDecrypt(String qsInputFile, String qsOutputFile, String qsPassword, String qsSalt, int qiNumOfIterations)
+        /// <summary>
+        /// This function decrypts a file using AES encryption.
+        /// </summary>
+        /// <param name="inputFile">Path to the file to encrypt</param>
+        /// <param name="outputFile">The encrypted output file</param>
+        /// <param name="password">The password for derivation of a key for AES encryption</param>
+        /// <param name="salt">The salt for derivation of a key for AES encryption</param>
+        /// <param name="numOfIterations">The num of iterations for derivation of a key for AES encryption</param>
+        public static void AesDecrypt(String inputFile, String outputFile, String password, String salt, int numOfIterations)
         {
             Aes aes = Aes.Create("AesManaged");
             aes.KeySize = 256;
             aes.BlockSize = 128;
 
-            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(qsPassword, ASCIIEncoding.ASCII.GetBytes(qsSalt), qiNumOfIterations);
+            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, ASCIIEncoding.ASCII.GetBytes(salt), numOfIterations);
             aes.Key = key.GetBytes(aes.KeySize / 8);
             aes.IV = key.GetBytes(aes.BlockSize / 8);
             aes.Mode = CipherMode.CBC;
 
-            FileStream FsInput = new FileStream(qsInputFile, FileMode.Open);
-            CryptoStream CsInput = new CryptoStream(FsInput, aes.CreateDecryptor(), CryptoStreamMode.Read);
-            FileStream FsOutput = new FileStream(qsOutputFile, FileMode.Create);
+            FileStream inputStream = new FileStream(inputFile, FileMode.Open);
+            CryptoStream cryptoStream = new CryptoStream(inputStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
+            FileStream outputStream = new FileStream(outputFile, FileMode.Create);
 
             int data;
-            while ((data = CsInput.ReadByte()) != -1)
+            while ((data = cryptoStream.ReadByte()) != -1)
             {
-                FsOutput.WriteByte((byte)data);
+                outputStream.WriteByte((byte)data);
             }
 
-            FsOutput.Close();
-            CsInput.Close();
-            FsInput.Close();
+            outputStream.Close();
+            cryptoStream.Close();
+            inputStream.Close();
         }
     }
 }

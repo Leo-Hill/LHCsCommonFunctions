@@ -77,23 +77,23 @@ namespace LHCommonFunctions.Source
             ExcelChart.DisplayBlanksAs = Excel.XlDisplayBlanksAs.xlInterpolated;                    //Interpolate empty cells
             ExcelChart.HasTitle = false;
             //Size of the chart
-            qExcelChartObject.Width = LHCalculationFunctions.dCmToPt(25);
-            qExcelChartObject.Height = LHCalculationFunctions.dCmToPt(15);
+            qExcelChartObject.Width = LHCalculationFunctions.CmToPt(25);
+            qExcelChartObject.Height = LHCalculationFunctions.CmToPt(15);
 
             //Plot area settings
             //Size and position of the plot area
-            ExcelChart.PlotArea.Width = LHCalculationFunctions.dCmToPt(20);
-            ExcelChart.PlotArea.Height = LHCalculationFunctions.dCmToPt(14);
-            ExcelChart.PlotArea.Left = LHCalculationFunctions.dCmToPt(0.5);
-            ExcelChart.PlotArea.Top = LHCalculationFunctions.dCmToPt(0.5);
+            ExcelChart.PlotArea.Width = LHCalculationFunctions.CmToPt(20);
+            ExcelChart.PlotArea.Height = LHCalculationFunctions.CmToPt(14);
+            ExcelChart.PlotArea.Left = LHCalculationFunctions.CmToPt(0.5);
+            ExcelChart.PlotArea.Top = LHCalculationFunctions.CmToPt(0.5);
             //Plot area border
             ExcelChart.PlotArea.Border.Color = Color.Black;
             ExcelChart.PlotArea.Border.Weight = Excel.XlBorderWeight.xlMedium;
             //Legend
-            ExcelChart.Legend.Left = LHCalculationFunctions.dCmToPt(20);
-            ExcelChart.Legend.Top = LHCalculationFunctions.dCmToPt(1);
-            ExcelChart.Legend.Width = LHCalculationFunctions.dCmToPt(4);
-            ExcelChart.Legend.Height = LHCalculationFunctions.dCmToPt(12);
+            ExcelChart.Legend.Left = LHCalculationFunctions.CmToPt(20);
+            ExcelChart.Legend.Top = LHCalculationFunctions.CmToPt(1);
+            ExcelChart.Legend.Width = LHCalculationFunctions.CmToPt(4);
+            ExcelChart.Legend.Height = LHCalculationFunctions.CmToPt(12);
             ExcelChart.Legend.Font.Size = 12;
             ExcelChart.Legend.Font.FontStyle = "Bold";
 

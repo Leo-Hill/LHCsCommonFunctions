@@ -213,7 +213,7 @@ namespace LHCommonFunctions.Source
                             InsertNewBlock(consecutiveBytes, startAddressOfCurrentBlock);
                             consecutiveBytes.Clear();
 
-                            currentAddressOffset = (UInt16)LHMemoryFunctions.oCopyFromArrayReversed(currentLineInformation.data, 0, typeof(UInt16));
+                            currentAddressOffset = (UInt16)LHMemoryFunctions.CopyFromBigEndianArray(currentLineInformation.data, 0, typeof(UInt16));
                             currentAddressOffset = currentAddressOffset << 16;
 
                             break;
@@ -258,7 +258,6 @@ namespace LHCommonFunctions.Source
                 lineInformation.data[dataCnt] = Convert.ToByte(line.Substring(9 + 2 * dataCnt, 2), 16);
             }
             return lineInformation;
-
         }
 
     }
