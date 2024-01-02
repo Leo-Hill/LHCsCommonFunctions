@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace LHCommonFunctions.Source
 {
@@ -172,7 +173,7 @@ namespace LHCommonFunctions.Source
             Array.Copy(Encoding.GetEncoding(LHStringFunctions.I_CODEPAGE_ISO_8859_1).GetBytes(sourceString), 0, targetArray, targetArrayIndex, sourceString.Length);
             if (copyNullTerminator)
             {
-                targetArray[targetArrayIndex + sourceString.Length ] = 0;
+                targetArray[targetArrayIndex + sourceString.Length] = 0;
             }
         }
 
@@ -196,6 +197,26 @@ namespace LHCommonFunctions.Source
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public static byte[] ReverseEndianessOfContent(byte[] array, Type contentType)
+        {
+            int typeSize = Marshal.SizeOf(contentType);
+            if(array.Length%typeSize != 0)
+            {
+                throw new Exception("Content type is not compatible with array size");
+            }
+
+            byte[] endian_reversed_data = new byte[array.Length];
+            int num_of_type_elements = array.Length / typeSize;
+            for (int type_cnt = 0; type_cnt < num_of_type_elements; type_cnt++)
+            {
+                for (int byte_cnt = 0; byte_cnt < typeSize; byte_cnt++)
+                {
+                    endian_reversed_data[typeSize * type_cnt + byte_cnt] = array[typeSize * type_cnt + (typeSize-1) - byte_cnt];
+                }
+            }
+            return endian_reversed_data;
         }
     }
 }

@@ -254,5 +254,29 @@ namespace Functions
             UInt32 result = (UInt32)LHMemoryFunctions.ReverseEndianess(value);
             Assert.AreEqual((UInt32)0x785634F2, result);
         }
+
+        [TestMethod]
+        public void ReverseEndianessForContentWorksCorrectly()
+        {
+            byte[] array = { 0x12, 0x34, 0x56, 0x78, 0xAA, 0xBB, 0xCC, 0xDD };
+            byte[] reversed = LHMemoryFunctions.ReverseEndianessOfContent(array, typeof(UInt32));
+            Assert.AreEqual(reversed[0], 0x78);
+            Assert.AreEqual(reversed[1], 0x56);
+            Assert.AreEqual(reversed[2], 0x34);
+            Assert.AreEqual(reversed[3], 0x12);
+
+            Assert.AreEqual(reversed[4], 0xDD);
+            Assert.AreEqual(reversed[5], 0xCC);
+            Assert.AreEqual(reversed[6], 0xBB);
+            Assert.AreEqual(reversed[7], 0xAA);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void ReverseEndianessForContentThrowsExceptionIfTypeIsNotMatchingSize()
+        {
+            byte[] array = { 0x12, 0x34, 0x56, 0x78, 0xAA, 0xBB, 0xCC};
+            byte[] reversed = LHMemoryFunctions.ReverseEndianessOfContent(array, typeof(UInt32));
+        }
     }
 }

@@ -123,21 +123,75 @@ namespace LHCommonFunctions.Source
             DTAxisXMax = DTAxisXMax.AddSeconds(-DTAxisXMax.Second);                                 //Set the minute to 0
             DTAxisXMax = DTAxisXMax.AddMilliseconds(-DTAxisXMax.Millisecond);                       //Set the milliseconds to 0
             ExcelAxisX.MaximumScale = DTAxisXMax.ToOADate();
-            ExcelAxisX.MajorUnit = (DTAxisXMax.ToOADate() - DTAxisXMin.ToOADate()) / 4;
+
+            const int iNumOfXMajorUnits = 4;
+            ExcelAxisX.MajorUnit = (DTAxisXMax.ToOADate() - DTAxisXMin.ToOADate()) / iNumOfXMajorUnits;
+
+
+            //Axis-Y Max
+            double dAxisYMax = 0;
+            if (ExcelAxisY.MaximumScale > 0)
+            {
+                dAxisYMax = ExcelAxisY.MaximumScale;
+                double dAxisYMaxPow = Math.Floor(Math.Log10(dAxisYMax));                                //Get the pow of 10 of the maximum value
+                dAxisYMax = Math.Floor(dAxisYMax / Math.Pow(10, dAxisYMaxPow));                         //Get the first digit of the max value
+                dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);                               //Calculate the new Y-Max value
+            }
 
             //Axis-Y Min
-            ExcelAxisY.MinimumScale = 0;
-            //Axis-Y Max
-            double dAxisYMax = ExcelAxisY.MaximumScale;
-            double dAxisYMaxPow = Math.Floor(Math.Log10(dAxisYMax));                                //Get the pow of 10 of the maximum value
-            dAxisYMax = Math.Floor(dAxisYMax / Math.Pow(10, dAxisYMaxPow));                         //Get the first digit of the max value
-            dAxisYMax = (dAxisYMax + 1) * Math.Pow(10, dAxisYMaxPow);                               //Calculate the new Y-Max value
-            ExcelAxisY.MaximumScale = dAxisYMax;                                                    //Set the new Y-Max value
-            ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale - ExcelAxisY.MinimumScale) / 4;
-            if (dAxisYMax < 1)
+            double dAxisYMin = 0;
+            if (ExcelAxisY.MinimumScale < 0)
             {
-                int iNumOfDecimals = -(int)Math.Floor(Math.Log10(dAxisYMax));
+                dAxisYMin = -ExcelAxisY.MinimumScale;
+                double dAxisYMinPow = Math.Floor(Math.Log10(dAxisYMin));                                //Get the pow of 10 of the minimum value
+                dAxisYMin = Math.Floor(dAxisYMin / Math.Pow(10, dAxisYMinPow));                         //Get the first digit of the max value
+                dAxisYMin = -(dAxisYMin + 1) * Math.Pow(10, dAxisYMinPow);                               //Calculate the new Y-Max value
+            }
+
+            //There are the following scenarios for scaling
+            //1) and 2) If there are only positive (negative) values we want the YMin (YMax) to be 0. These cases are already handled above
+            //3) If we have negative and positive values, we want the absolute of YMin and YMax to be equal
+            double dMaxAbsoluteY = Math.Max(Math.Abs(dAxisYMax), Math.Abs(dAxisYMin));
+            if (dAxisYMin != 0 && dAxisYMax != 0)
+            {
+                dAxisYMax = dMaxAbsoluteY;
+                dAxisYMin = -dMaxAbsoluteY;
+            }
+
+
+            ExcelAxisY.MinimumScale = dAxisYMin;
+            ExcelAxisY.MaximumScale = dAxisYMax;
+            ExcelAxisY.Crosses = Excel.XlAxisCrosses.xlAxisCrossesCustom;
+            ExcelAxisY.CrossesAt = ExcelAxisY.MinimumScale;
+
+            const int iNumOfYMajorUnits = 4;
+            ExcelAxisY.MajorUnit = (ExcelAxisY.MaximumScale - ExcelAxisY.MinimumScale) / iNumOfYMajorUnits;
+
+
+            //We want to prevent the Y major tick labels showing the same value twice, so in case the max/min value is smaller than the major units, 
+            //we show an additional decimal.
+            double dMinFirstDigitWithoutExtraDecimals = iNumOfYMajorUnits;
+            if (dAxisYMin != 0 && dAxisYMax != 0)
+            {
+                dMinFirstDigitWithoutExtraDecimals /= 2;
+            }
+
+            double dFirstDigitOfAbsoluteMax = Math.Floor(dMaxAbsoluteY / Math.Pow(10, Math.Floor(Math.Log10(dMaxAbsoluteY))));
+            int iNumOfDecimals = 0;
+            if (dFirstDigitOfAbsoluteMax < dMinFirstDigitWithoutExtraDecimals && dMaxAbsoluteY < 10)
+            {
+                iNumOfDecimals++;
+            }
+
+            //Show decimals in case the max value is below 1
+            if (dMaxAbsoluteY < 1)
+            {
+                iNumOfDecimals += -(int)Math.Floor(Math.Log10(dMaxAbsoluteY));
                 iNumOfDecimals = Math.Max(1, iNumOfDecimals);
+            }
+
+            if (iNumOfDecimals > 0)
+            {
                 ExcelAxisY.TickLabels.NumberFormat = "0,";
                 for (; iNumOfDecimals > 0; iNumOfDecimals--)
                 {
