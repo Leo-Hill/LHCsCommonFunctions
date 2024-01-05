@@ -51,7 +51,7 @@ namespace LHCommonFunctions.Source
 
             //Save the excel file
             ExcelWorkBookDestination.SaveAs(qsFilePathDestination, Excel.XlFileFormat.xlWorkbookDefault);
-            ExcelWorkBookDestination.Close(true);
+            ExcelWorkBookDestination.Close(false);
             ExcelWorkBookSource.Close(false);
             ExcelApp.Quit();
 
